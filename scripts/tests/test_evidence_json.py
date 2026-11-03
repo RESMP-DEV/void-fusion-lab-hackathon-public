@@ -155,6 +155,18 @@ def test_the_non_claims_separate_the_demo_from_private_pipeline_outputs() -> Non
     assert any("private pipeline outputs are not redistributed" in claim for claim in claims)
 
 
+def test_the_public_evidence_and_readme_carry_the_layperson_premise() -> None:
+    payload = load_evidence()
+    premise = payload["demo"]["one_sentence_premise"]
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    normalized_readme = " ".join(readme.split())
+
+    assert premise.startswith("Void Fusion changes who or what appears")
+    assert payload["demo"]["presentation_guide"] == "docs/presentation.md"
+    assert (ROOT / payload["demo"]["presentation_guide"]).is_file()
+    assert premise in normalized_readme
+
+
 def test_every_tracked_evidence_json_parses() -> None:
     completed = subprocess.run(
         ["git", "-C", str(ROOT), "ls-files", "--", "evidence"],

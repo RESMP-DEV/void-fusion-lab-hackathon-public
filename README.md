@@ -7,6 +7,11 @@ replacement, refine only the seam, and measure what changed. The goal is to
 avoid a reshoot when the action is right but an object, product, stand-in, or
 character must change.
 
+In one sentence: **Void Fusion changes who or what appears in an existing video
+by automatically finding one selected object, erasing it, inserting a
+replacement that follows the original motion, and measuring whether the result
+stays believable.**
+
 **Watch the 2 minute 36 second demo:**
 [void-fusion-demo-2026-11-03-public.mp4](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v1.0.0/void-fusion-demo-2026-11-03-public.mp4)
 
@@ -100,6 +105,8 @@ environment.
 
 - [`docs/architecture.md`](docs/architecture.md) is the canonical technical
   status document.
+- [`docs/presentation.md`](docs/presentation.md) is the judge-facing
+  plain-language premise, demo map, rubric breakdown, and Q&A guide.
 - [`evidence/submission-evidence.json`](evidence/submission-evidence.json)
   binds the real four-candidate execution.
 - [`provenance/daily/`](provenance/daily) is the anonymized cumulative

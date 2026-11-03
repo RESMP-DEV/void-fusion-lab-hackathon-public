@@ -25,6 +25,7 @@ timeline below records only post-kickoff contributions.
 | Pass2-aware Best-of-N full-chain ranking | implemented and exercised | `src/samurai/best_of_n.py`; four-candidate ranking in submission evidence |
 | Four real complete VOID chains and selected full-chain winner | executed and measured | `evidence/submission-evidence.json` |
 | Under-three-minute submission demo | produced | Release asset `void-fusion-demo-2026-11-03-public.mp4` at tag `v1.0.0`; digest and metadata in submission evidence |
+| Judge-facing plain-language presentation guide | produced | `docs/presentation.md` |
 
 The anonymized cumulative event timeline is
 [`../provenance/daily/2026-11-03.json`](../provenance/daily/2026-11-03.json).
