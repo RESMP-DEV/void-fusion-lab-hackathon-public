@@ -1,0 +1,202 @@
+{
+  "schema": "void-fusion-lab.submission-evidence.v1",
+  "recorded_at": "2026-11-03T19:43:20.430120+00:00",
+  "public_export_note": "Sanitized public submission evidence. Private source media, machine paths, Git history, pull-request discussion, and checkpoints are absent; immutable outputs are bound by SHA-256.",
+  "meta_model_usage": {
+    "dense_perception": "Meta SAM 3.1",
+    "reasoning_prototype": "Meta Muse Spark 1.3",
+    "completed_model_catalog_probe": true,
+    "successful_muse_calls_recorded": 3,
+    "known_modeled_usd_debit": 0.007545,
+    "one_uncaptured_generation_disclosed": true,
+    "live_billing_balance_observed": false,
+    "full_sanitized_usage_summary": "Muse validated target/affected semantics and a bounded prompt candidate; no secret or provider response body is required to reproduce the accounting boundary."
+  },
+  "real_full_chain": {
+    "full_chain_objective_formula": {
+      "expression": "0.35 * pre_pass2_objective + 0.25 * (1 - object_preservation_changed_ratio) + 0.20 * (1 - background_changed_ratio) + 0.20 * (1 - temporal_pop_score)",
+      "terms": [
+        {
+          "weight": 0.35,
+          "metric": "pre_pass2_objective",
+          "complemented": false
+        },
+        {
+          "weight": 0.25,
+          "metric": "object_preservation_changed_ratio",
+          "complemented": true
+        },
+        {
+          "weight": 0.2,
+          "metric": "background_changed_ratio",
+          "complemented": true
+        },
+        {
+          "weight": 0.2,
+          "metric": "temporal_pop_score",
+          "complemented": true
+        }
+      ],
+      "provenance": "pre_pass2_objective carries the retained private report's pre-Pass2 score for the same candidate. full_chain_objective is the value computed from that score and the published comparator metrics, so every candidate objective recomputes from this file."
+    },
+    "candidates": {
+      "smooth-00": {
+        "pre_pass2_objective": 0.5874731897309333,
+        "full_chain_objective": 0.4767313284154566,
+        "metrics": {
+          "object_preservation_changed_ratio": 0.5945896356958622,
+          "cleanup_ring_changed_ratio": 0.5068318905198954,
+          "background_changed_ratio": 0.15118439533202255,
+          "temporal_pop_score": 1.0
+        },
+        "derivative_input_sha256": "61338d53ceaea74ec8278cd497378fcc5090c80c06606d977f43dcffa32b8a06",
+        "derivative_inserted_mask_sha256": "0bd7a6f9b17959704b55de0957dcc4ef73d42ba94615ae834b3cf3be3c75ce32",
+        "derivative_cleanup_mask_sha256": "2a7c4e31a3e0b72856550e8f958cd73bc69ee432c8837688e90faee3c7d69ad7",
+        "native_pass2_sha256": "496ff0b9463da7337ac62a505b405c00c7d08e008c7780a8398634552c513bbe",
+        "retimed_pass2_sha256": "a9f9ea602551d0fb617c8ef379ce49002ffa886cd5b21527b5f95e2ee0e98843",
+        "comparator_report_sha256": "43cc303d23d923fe0325057471f74a5d79c9a0ad77316b77c158d01de547b67c"
+      },
+      "smooth-02": {
+        "pre_pass2_objective": 0.5880659070744884,
+        "full_chain_objective": 0.4760929340198969,
+        "metrics": {
+          "object_preservation_changed_ratio": 0.5961391766920197,
+          "cleanup_ring_changed_ratio": 0.507034503530284,
+          "background_changed_ratio": 0.1534766971158458,
+          "temporal_pop_score": 1.0
+        },
+        "derivative_input_sha256": "b55a1842c782f533d79b3a756e64475ac4eea3b376a563459c5f3f48a484603a",
+        "derivative_inserted_mask_sha256": "30755c3da11ab2f5f51297ff6fa56bbf4b1a002be04d3502a55a5213f6553211",
+        "derivative_cleanup_mask_sha256": "3fb7c94471f6811e912d24e9f1347a302424b8e723e167c6577dae88a62c3588",
+        "native_pass2_sha256": "d0a1d9077a81f38219856e3f7488d1b03ea1a2793271a82b6e0ec1f96cfaced0",
+        "retimed_pass2_sha256": "586af9ee4d163d4c2d555d69b2383078192aa6834089650373a46afb8c579047",
+        "comparator_report_sha256": "d0592fc386994ef8c82183f20f1757912887a7fbb00fa63188eea24e80f9ed2e"
+      },
+      "smooth-04": {
+        "pre_pass2_objective": 0.5852719043703201,
+        "full_chain_objective": 0.47532410352620236,
+        "metrics": {
+          "object_preservation_changed_ratio": 0.595396918048715,
+          "cleanup_ring_changed_ratio": 0.5083484216174898,
+          "background_changed_ratio": 0.15335916745615455,
+          "temporal_pop_score": 1.0
+        },
+        "derivative_input_sha256": "1a17660d44ee3fb1beb1853ec6ebd76cdfd8e86ea8c09240081ee5da489e08d9",
+        "derivative_inserted_mask_sha256": "a0b15ab61324ce19f9face34bfdf8f7c52ea64d21e4a44d97c71f4fc034f8bc3",
+        "derivative_cleanup_mask_sha256": "9079f30c666ec02a8fdd18676f9cf1559aed48cf36841f324924e964ea787e0a",
+        "native_pass2_sha256": "fcef7f58aa8c1c42f57da7d2a9d79e84924d62b6645a4593addcc7c3dc224b16",
+        "retimed_pass2_sha256": "d2ce991c7e5c4a776451d0d9c77a8927ce8e08ebbfbc86b04dfcdfe75c53d7bb",
+        "comparator_report_sha256": "fccb659faf36f5a9e8ed78917a5ecb0243446c3bf3ebb2aaeeed255ae88ef796"
+      },
+      "smooth-06": {
+        "pre_pass2_objective": 0.5881883040922771,
+        "full_chain_objective": 0.47659653569115445,
+        "metrics": {
+          "object_preservation_changed_ratio": 0.5951629757540018,
+          "cleanup_ring_changed_ratio": 0.5089377832906344,
+          "background_changed_ratio": 0.15239313401321053,
+          "temporal_pop_score": 1.0
+        },
+        "derivative_input_sha256": "7d3cfe467bd40e51b202052210872122a5c6e37499d9acea46477d85d16a510f",
+        "derivative_inserted_mask_sha256": "701e96aacc0067d780e2bc6a9751cf89d6f1a1054051ad28885c899642e7e3e0",
+        "derivative_cleanup_mask_sha256": "df54b390b519230177bf17de38ea583013fd81f91e35dbb0ce29733697bdb674",
+        "native_pass2_sha256": "4594bb2ec4ebf0d926df167f77b3d78726719fdc32e76fae0d4c2f09a2745b9f",
+        "retimed_pass2_sha256": "44f4adbbd81bad8d5503266bba86419e3dac05c8a320337a4ac180835657d501",
+        "comparator_report_sha256": "0492df7e0edf0a94f3bf792e245c204607c4de5e4800fa0402fd6891c80a1632"
+      }
+    },
+    "execution": {
+      "gpu": "RTX 3090 Ti GPU 0",
+      "videos": 4,
+      "succeeded": 4,
+      "failed": 0,
+      "steps_per_video": 50,
+      "seed": 42,
+      "guidance_scale": 6.0,
+      "geometry": "672x384",
+      "frames": 85,
+      "temporal_window_size": 85,
+      "native_fps": "12/1",
+      "retimed_fps": "24000/1001",
+      "exit_code": 0,
+      "log_sha256": "d9aa1524a6e860cfea9260a38e6384ac43127bb38f759c2923b1600a191c214d",
+      "shared_warped_noise": "The four candidates reused the retained 85-frame clean-plate warped-noise tensor; candidate-specific quadmasks and inputs differed.",
+      "void_revision": "e3914f8f551dd4b880661991fd6b28cd1699a97a",
+      "pass2_checkpoint_sha256": "4445d063c3044d0c827ca728387ecd2aecc5344274a4b73d7091e27ec290ec41",
+      "base_model_identity": "alibaba-pai/CogVideoX-Fun-V1.5-5b-InP",
+      "torch": "2.7.1+cu126",
+      "diffusers": "0.33.1",
+      "rp_version": "0.1.1430",
+      "raft_checkpoint_sha256": "ff5fadd56d26b40647388883af1547351ea17868b765c05b27231e72dd16a322"
+    },
+    "full_chain_selection": {
+      "require_full_chain": true,
+      "selected_candidate_id": "smooth-00",
+      "selected_basis": "full_chain",
+      "ranking": [
+        {
+          "candidate_id": "smooth-00",
+          "objective": 0.4767313284154566
+        },
+        {
+          "candidate_id": "smooth-06",
+          "objective": 0.47659653569115445
+        },
+        {
+          "candidate_id": "smooth-02",
+          "objective": 0.4760929340198969
+        },
+        {
+          "candidate_id": "smooth-04",
+          "objective": 0.47532410352620236
+        }
+      ],
+      "report_sha256": "8a479bbbf2b9e46b5d3de7b8ad9d48bdbbcb21cd320cfdd81d817b388a5008da"
+    },
+    "owned_frame_contact": {
+      "owned_frames": [
+        0,
+        1,
+        7,
+        13
+      ],
+      "total_frames": 96,
+      "owned_frame_ratio": 0.041666666666666664,
+      "continuous_ownership_claimed": false,
+      "candidate_mean_contact_coverage": {
+        "smooth-00": 0.3129436065549699,
+        "smooth-02": 0.3189681327821608,
+        "smooth-04": 0.32281290012086256,
+        "smooth-06": 0.3265244898323134
+      },
+      "report_sha256": "fe091c0b7f0673ba5c559c0b71262e7e1b2c8af103131b03b71d98655b7ebb01"
+    }
+  },
+  "demo": {
+    "title": "Void Fusion: find, remove, insert, refine, measure",
+    "duration_seconds": 155.798549,
+    "resolution": "1280x720",
+    "fps": "24000/1001",
+    "voice": "recorded English narration",
+    "asset": "release asset void-fusion-demo-2026-11-03-public.mp4 at tag v1.0.0",
+    "asset_nature": "generated presentation recording of the pipeline",
+    "asset_file_name": "void-fusion-demo-2026-11-03-public.mp4",
+    "asset_sha256": "b3e0ca9530662da0a59826e185e3cd801b9f2dcb85524d93ef2eeb8080cfccf1",
+    "asset_size_bytes": 47089693,
+    "asset_duration_seconds": 155.798549,
+    "asset_resolution": "1280x720",
+    "asset_fps": "24000/1001",
+    "release_tag": "v1.0.0",
+    "release_url": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v1.0.0/void-fusion-demo-2026-11-03-public.mp4",
+    "presentation_derivative": "The public presentation recording applies a static FFmpeg delogo operation to the upper-left source-watermark region; geometry, frame timing, audio, pipeline metrics, and private pipeline artifacts are unchanged."
+  },
+  "non_claims": [
+    "Comparator metrics measure change, not artistic or physical quality improvement.",
+    "All four real comparators report temporal pop 1.0 and lead-in violation; these are visible limitations.",
+    "Lower-body ownership is 4/96 frames; no continuous ownership or full-body physics is claimed.",
+    "The fitted asset is a model-free pneumatic proxy, not learned image-to-3D generation.",
+    "Private source media and private pipeline outputs are not redistributed; only output digests are public.",
+    "The released demo is a generated presentation recording of the pipeline, not a redistribution of the private pipeline outputs (candidate derivatives, clean plate, comparator reports, execution log); those stay bound by SHA-256 only.",
+    "The public repository is a fresh single-commit export and is not a claim that its commit count equals the cumulative event contribution count."
+  ]
+}

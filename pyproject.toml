@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "void-fusion-lab"
+version = "0.1.0"
+description = "Model-conditioned video object removal, fusion, and VOID research workspace"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "numpy>=1.26,<3",
+  "pillow>=11",
+]
+
+[project.optional-dependencies]
+sam31 = [
+  "torch==2.10.0",
+  "torchvision",
+  "einops",
+  "triton; sys_platform == 'linux'",
+  "setuptools<81",
+  "sam3 @ git+https://github.com/facebookresearch/sam3.git@7f473cfd983d5eb43040ff608f66bff0d7bdcb53",
+]
+
+[project.scripts]
+samurai = "samurai.cli:main"
+void-fusion-lab = "samurai.cli:main"
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "ruff",
+  "ty",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/samurai"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["scripts/tests"]
+pythonpath = ["src", "scripts"]

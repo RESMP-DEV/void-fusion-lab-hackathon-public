@@ -1,0 +1,72 @@
+{
+  "_note": "EXAMPLE ONLY. The env_file values in this tracked file are ENVIRONMENT PLACEHOLDERS: \"$MINIMAX_ENV_FILE\" or \"${MINIMAX_ENV_FILE}\" resolve on the execution host to the operator's real env file. A REAL SECRET-FILE PATH (a literal path to a file on one machine, or a tilde user path) is not an example: it is machine specific, it discloses the operator's filesystem layout, and it must never be committed here. Point the placeholder at the real file instead. The harness expands $VAR / ${VAR} placeholders and tilde user paths before it opens the file, and it only opens a file that resolves inside an operator-supplied allowlist directory (--allowed-env-dir). Never commit a key value.",
+  "schema": "critique-harness providers v1 \u2014 model is DATA, never code. Add a model by adding a config object; the loop logic does not change. Required keys per provider: provider, model_id, base_url, endpoint_style, chat_path, env_file, auth, max_tokens. auth is required and must match the endpoint_style (bearer for openai-compat, x-api-key for anthropic-compat); anthropic-compat also requires anthropic_version. Optional keys: temperature (default 0.1), retry_max_tokens (default 12000), vision, quirks (documentation only). temperature, max_tokens and retry_max_tokens must be positive numbers: a zero, a negative value, or a non-number is refused before the first paid call. The harness checks this schema, the item set, the item images, and the key file before the first paid call.",
+  "providers": {
+    "minimax": {
+      "provider": "minimax",
+      "model_id": "MiniMax-M3.1-Flash",
+      "base_url": "https://api.minimax.io/v1",
+      "endpoint_style": "openai-compat",
+      "chat_path": "/chat/completions",
+      "env_file": "$MINIMAX_ENV_FILE",
+      "auth": "bearer",
+      "temperature": 0.1,
+      "max_tokens": 8000,
+      "retry_max_tokens": 12000,
+      "vision": "PROVEN (vision probe + judged run + critique-run, 2026-10-27)",
+      "quirks": [
+        "reasoning-heavy: reasoning can consume the whole token budget before the JSON is emitted (measured 25% parse-fail at 8000 in critique-run); schema-first prompt order + one 12000-token brevity retry are the standing mitigations",
+        "per-frame visual screen only: boundary-blind (judged run: erosion 3/6/12px all returned ok); never a boundary gate",
+        "quota: MiniMax Coding Plan draw, no per-call currency exposed"
+      ]
+    },
+    "minimax-anthropic": {
+      "provider": "minimax",
+      "model_id": "MiniMax-M3.1-Flash",
+      "base_url": "https://api.minimax.io/anthropic",
+      "endpoint_style": "anthropic-compat",
+      "chat_path": "/v1/messages",
+      "env_file": "$MINIMAX_ENV_FILE",
+      "auth": "x-api-key",
+      "anthropic_version": "2023-06-01",
+      "temperature": 0.1,
+      "max_tokens": 8000,
+      "retry_max_tokens": 12000,
+      "vision": "route PROVEN for text (the model-agnostic harness lane used the anthropic surface shape); vision on this surface tested by a proof run",
+      "quirks": [
+        "same reasoning-budget risk as openai-compat surface"
+      ]
+    },
+    "minimax-m3": {
+      "provider": "minimax",
+      "model_id": "MiniMax-M3",
+      "base_url": "https://api.minimax.io/v1",
+      "endpoint_style": "openai-compat",
+      "chat_path": "/chat/completions",
+      "env_file": "$MINIMAX_ENV_FILE",
+      "auth": "bearer",
+      "temperature": 0.1,
+      "max_tokens": 8000,
+      "retry_max_tokens": 12000,
+      "vision": "UNTESTED at config time (listed on both MiniMax model endpoints, census 2026-10-27); the harness probes it as a model_id-as-data check",
+      "quirks": []
+    },
+    "openrouter": {
+      "provider": "openrouter",
+      "model_id": "nvidia/nemotron-3.5-super-vl:free",
+      "base_url": "https://openrouter.ai/api/v1",
+      "endpoint_style": "openai-compat",
+      "chat_path": "/chat/completions",
+      "env_file": "$OPENROUTER_ENV_FILE",
+      "auth": "bearer",
+      "temperature": 0.1,
+      "max_tokens": 8000,
+      "retry_max_tokens": 12000,
+      "vision": "Catalogue-verified image-input model (OpenRouter /models, 2026-10-27: 463 models, 308 with image input modality); :free variant = $0 per call. NOT proven on the judged set until the proof run below lands; the catalogue census had not landed at config time.",
+      "quirks": [
+        "free-tier model: rate limits possible; a refused or errored call is recorded verbatim, never retried silently",
+        "env file holds a bare key with no VAR= prefix; harness load_key handles both forms"
+      ]
+    }
+  }
+}

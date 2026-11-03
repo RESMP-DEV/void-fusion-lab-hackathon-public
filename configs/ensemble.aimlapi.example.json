@@ -1,0 +1,75 @@
+{
+  "input_video": "/path/to/object-interaction.mp4",
+  "expert_persist_dir": "experts",
+  "expert_persist_mode": "opt-in",
+  "experts": [
+    {
+      "name": "sam31-anchor",
+      "kind": "tensor",
+      "path": "/path/to/sam31-probabilities.npy",
+      "representation": "probabilities",
+      "weight": 0.55,
+      "temperature": 1.0
+    },
+    {
+      "name": "mimo-semantic",
+      "kind": "command",
+      "command": [
+        "uv",
+        "run",
+        "python",
+        "scripts/aimlapi_expert.py",
+        "--model",
+        "xiaomi/mimo-v2.5"
+      ],
+      "prompt": "Locate the object to remove and semantically related interaction regions.",
+      "weight": 0.15,
+      "temperature": 1.4,
+      "normalized_coordinates": true,
+      "boundary_sigma": 1.5
+    },
+    {
+      "name": "gemini-frame",
+      "kind": "command",
+      "command": [
+        "uv",
+        "run",
+        "python",
+        "scripts/aimlapi_expert.py",
+        "--model",
+        "google/gemini-3-8-flash"
+      ],
+      "prompt": "Locate the primary object and visible effects such as shadows and reflections.",
+      "weight": 0.15,
+      "temperature": 1.2,
+      "normalized_coordinates": true,
+      "boundary_sigma": 1.0
+    },
+    {
+      "name": "dola-artifact",
+      "kind": "command",
+      "command": [
+        "uv",
+        "run",
+        "python",
+        "scripts/aimlapi_expert.py",
+        "--model",
+        "bytedance/dola-seed-2-0-pro"
+      ],
+      "prompt": "Locate likely inpainting artifacts and unstable interaction boundaries.",
+      "weight": 0.15,
+      "temperature": 1.6,
+      "normalized_coordinates": true,
+      "boundary_sigma": 2.0
+    }
+  ],
+  "fusion": {
+    "mode": "top_k",
+    "top_k_ratio": 0.02,
+    "dynamic_weights": "entropy",
+    "min_expert_support": 2,
+    "support_threshold": 0.5,
+    "batch_size": 4,
+    "max_batch_pixels": 32000000
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "void_root": "/path/to/void-model",
+  "data_rootdir": "/path/to/void-sequences",
+  "output_dir": "/path/to/void-results/pass1",
+  "base_model": "/path/to/CogVideoX-Fun-V1.5-5b-InP",
+  "pass1_checkpoint": "/path/to/void_pass1.safetensors",
+  "pass2_checkpoint": "/path/to/void_pass2.safetensors",
+  "sequences": ["my-video"],
+  "sample_size": [384, 672],
+  "max_video_length": 197,
+  "temporal_window_size": 85,
+  "num_inference_steps": 50,
+  "guidance_scale": 1.0,
+  "pass2_guidance_scale": 6.0,
+  "seed": 42,
+  "warped_noise_cache_dir": "/path/to/void-warped-noise",
+  "gpu_memory_mode": "model_cpu_offload_and_qfloat8"
+}

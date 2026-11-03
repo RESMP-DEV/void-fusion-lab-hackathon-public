@@ -1,0 +1,886 @@
+{
+  "schema_version": 1,
+  "cadence": "cumulative_public_export",
+  "contributions": [
+    {
+      "areas": [
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 1,
+      "summary": "docs: record clean repository split"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 2,
+      "summary": "docs: record clean-repo review priority"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 3,
+      "summary": "docs: clarify SAM anchor and reasoning roles"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 4,
+      "summary": "docs: make the review process discoverable"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 5,
+      "summary": "docs: match authoritative review gates"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 6,
+      "summary": "docs: state clean repo index boundary"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 7,
+      "summary": "docs: adopt official guide and Meta key workflow"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-26",
+      "sequence": 8,
+      "summary": "fix: make keychain API example expand correctly"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 9,
+      "summary": "docs: complete guide evidence and credit ledger"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 10,
+      "summary": "docs: complete guide prize and ledger timestamps"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 11,
+      "summary": "docs: complete evidence update timestamps"
+    },
+    {
+      "areas": [
+        "documentation"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-26",
+      "sequence": 12,
+      "summary": "docs: add anonymized event history timeline"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-27",
+      "sequence": 13,
+      "summary": "feat: add bounded Muse-GLM prompt critique loop"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-27",
+      "sequence": 14,
+      "summary": "docs: record publication gate and contribution boundary"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-27",
+      "sequence": 15,
+      "summary": "docs: record publication scan self-match"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-27",
+      "sequence": 16,
+      "summary": "docs: record evidence relocation"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-29",
+      "sequence": 17,
+      "summary": "feat: split SAM referent tracking"
+    },
+    {
+      "areas": [
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-29",
+      "sequence": 18,
+      "summary": "feat: split critique tooling and hygiene gate"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-29",
+      "sequence": 19,
+      "summary": "docs: split sanitized qualification evidence"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-29",
+      "sequence": 20,
+      "summary": "feat: split governed tensor panel"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-29",
+      "sequence": 21,
+      "summary": "feat: split quadmask packaging"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 22,
+      "summary": "fix: repair governed tensor panel review findings"
+    },
+    {
+      "areas": [
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 23,
+      "summary": "fix: repair critique and hygiene review findings"
+    },
+    {
+      "areas": [
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-29",
+      "sequence": 24,
+      "summary": "docs: keep hygiene dispositions scoped to this tree"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 25,
+      "summary": "fix: fail closed on malformed SAM responses"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 26,
+      "summary": "fix: guard quadmask package inputs and outputs"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-29",
+      "sequence": 27,
+      "summary": "docs: correct qualification evidence boundaries"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 28,
+      "summary": "fix: require positive referent association evidence"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 29,
+      "summary": "fix: bind governed runs to calibrated artifacts"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-29",
+      "sequence": 30,
+      "summary": "docs: clarify expert persistence rollback comments"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 31,
+      "summary": "fix: harden quadmask packaging tools"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 32,
+      "summary": "fix: avoid import-time SAM environment mutation"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-29",
+      "sequence": 33,
+      "summary": "docs: scope qualification evidence to records"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-29",
+      "sequence": 34,
+      "summary": "docs: verify external evidence boundaries"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 35,
+      "summary": "fix: preserve calibrated artifact directories"
+    },
+    {
+      "areas": [
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 36,
+      "summary": "fix: harden critique and hygiene contracts"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 37,
+      "summary": "fix: harden MiniMax critique transport parsing"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 38,
+      "summary": "fix: stage verified quadmask packages"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-29",
+      "sequence": 39,
+      "summary": "docs: clarify external evidence digests and prompts"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 40,
+      "summary": "fix: verify transformed support and rollback saves"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 41,
+      "summary": "fix: use nearest SAM referent reference"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-29",
+      "sequence": 42,
+      "summary": "fix: hold the D4 lock across governed tensor mapping"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 43,
+      "summary": "fix: validate calibration transforms and support thresholds"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 44,
+      "summary": "fix: fail closed on untracked SAM referents"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 45,
+      "summary": "fix: stabilize D3 panel loading and failure records"
+    },
+    {
+      "areas": [
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 46,
+      "summary": "fix: harden critique transport and hygiene dispositions"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 47,
+      "summary": "fix: preserve orientation and canonical quadmask polarity"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-30",
+      "sequence": 48,
+      "summary": "docs: reconcile qualification evidence status"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 49,
+      "summary": "fix: pair SAM prompt ids with prompt masks"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 50,
+      "summary": "fix: harden critique inputs and reference validation"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 51,
+      "summary": "fix: guard empty panels and reuse fused probabilities"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 52,
+      "summary": "merge: governed tensor panel"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 53,
+      "summary": "merge master into the feature branch"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 54,
+      "summary": "merge: SAM referent tracking"
+    },
+    {
+      "areas": [
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 55,
+      "summary": "merge master into the feature branch"
+    },
+    {
+      "areas": [
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 56,
+      "summary": "merge: critique tooling and hygiene gate"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 57,
+      "summary": "merge master into the feature branch"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 58,
+      "summary": "merge: quadmask packaging"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 59,
+      "summary": "merge master into the feature branch"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 60,
+      "summary": "merge: sanitized qualification evidence"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 61,
+      "summary": "feat: make the SAM prompt the referent lock"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 62,
+      "summary": "fix: enforce box referent locks before SAM import"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 63,
+      "summary": "fix: record and constrain box referent locks"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 64,
+      "summary": "fix: validate finite SAM prompt coordinates"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 65,
+      "summary": "feat: plan deterministic scene restarts"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 66,
+      "summary": "fix: rank box locks by containment"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-30",
+      "sequence": 67,
+      "summary": "docs: make scene evidence ranges end-exclusive"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-10-30",
+      "sequence": 68,
+      "summary": "fix: enforce box containment for single seeds"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-30",
+      "sequence": 69,
+      "summary": "docs: correct box lock evidence wording"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 70,
+      "summary": "merge: SAM prompt referent lock"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 71,
+      "summary": "merge master into the feature branch"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 72,
+      "summary": "merge: deterministic scene restart planning"
+    },
+    {
+      "areas": [
+        "documentation"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-10-30",
+      "sequence": 73,
+      "summary": "docs: backfill completed provenance days"
+    },
+    {
+      "areas": [
+        "documentation"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-30",
+      "sequence": 74,
+      "summary": "merge: completed provenance backfill"
+    },
+    {
+      "areas": [
+        "documentation"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-31",
+      "sequence": 75,
+      "summary": "merge: completed 2026-10-30 provenance"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-31",
+      "sequence": 76,
+      "summary": "merge: sanitized annotation walkthrough"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-10-31",
+      "sequence": 77,
+      "summary": "merge: final demo candidate ranking"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-01",
+      "sequence": 78,
+      "summary": "merge: demo ranking scope correction"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-02",
+      "sequence": 79,
+      "summary": "Add bounded post-mask replacement iteration"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-03",
+      "sequence": 80,
+      "summary": "Add Best-of-N generated replacement selector"
+    },
+    {
+      "areas": [
+        "documentation"
+      ],
+      "change_type": "documentation",
+      "event_day": "2026-11-03",
+      "sequence": 81,
+      "summary": "docs: remove duplicated architecture history"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-03",
+      "sequence": 82,
+      "summary": "feat: add pre-Pass2 Best-of-N chain selection"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-03",
+      "sequence": 83,
+      "summary": "feat: measure lower-body pose ownership"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-03",
+      "sequence": 84,
+      "summary": "feat: add Pass 2 insertion comparison metrics"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-03",
+      "sequence": 85,
+      "summary": "feat: insert fitted renders into the clean plate"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-03",
+      "sequence": 86,
+      "summary": "feat: add contact grounding constraints"
+    },
+    {
+      "areas": [
+        "runtime",
+        "evidence"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-11-03",
+      "sequence": 87,
+      "summary": "fix: accept squash-clean contact evidence binding"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-03",
+      "sequence": 88,
+      "summary": "feat: export full candidate execution chains"
+    },
+    {
+      "areas": [
+        "runtime"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-03",
+      "sequence": 89,
+      "summary": "feat: rank Pass2-aware Best-of-N chains"
+    },
+    {
+      "areas": [
+        "runtime",
+        "evidence"
+      ],
+      "change_type": "feature",
+      "event_day": "2026-11-03",
+      "sequence": 90,
+      "summary": "feat: ground owned-frame contact evidence"
+    },
+    {
+      "areas": [
+        "evidence"
+      ],
+      "change_type": "evidence",
+      "event_day": "2026-11-03",
+      "sequence": 91,
+      "summary": "evidence: record real full-chain selected winner"
+    },
+    {
+      "areas": [
+        "runtime",
+        "tooling-and-tests"
+      ],
+      "change_type": "fix",
+      "event_day": "2026-11-03",
+      "sequence": 92,
+      "summary": "fix: make tracked tree release-clean"
+    }
+  ],
+  "eligibility": {
+    "cumulative_commit_count": 92,
+    "eligible_commit_count": 92,
+    "new_commit_count": 92,
+    "policy": "Cumulative catch-up through public export; only source-tree commits after official kickoff are listed. Private commit hashes, authors, committers, emails, paths, credentials, and review discussion are removed.",
+    "previous_cumulative_count": 0
+  },
+  "event_start_utc": "2026-10-26T16:00:00+00:00",
+  "export_cutoff_utc": "2026-11-03T20:51:23.259015+00:00",
+  "export_date": "2026-11-03",
+  "non_claims": [
+    "This is an anonymized timeline, not a Git-history import or code export.",
+    "No commit hash, author, committer, email, private path, credential, or private review thread is published.",
+    "A timeline entry is not evidence that a feature satisfies the hackathon quality or demo gate.",
+    "The public repository starts from one fresh release commit; that public commit count is intentionally not the cumulative event count."
+  ]
+}

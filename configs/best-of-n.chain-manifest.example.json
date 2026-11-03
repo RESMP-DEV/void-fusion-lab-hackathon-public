@@ -1,0 +1,129 @@
+{
+  "_note": "EXAMPLE ONLY. Every path below is a repository-relative placeholder that does not exist in a clean checkout; replace each one with a real artifact before running the selector. Run with: uv run python scripts/best_of_n.py select --manifest <this file> --out <output directory>. The target_mask polarity states which pixels are the removal region: roi_black means black (0) is the region of interest and foreground_white means white (255) is. The inserted_mask and cleanup_mask of every candidate follow the VOID convention, where black (0) is the region of interest. With require_full_chain, every pre-Pass2 survivor also needs pass2.native, pass2.retimed, pass2.result, and pass2.comparator records. pass2.result is the no-Pass2 comparator baseline derivative; its digest and geometry bind the comparator to this candidate. Missing, stale, mismatched, or geometry-inconsistent records fail closed.",
+  "schema": "void-fusion-lab.best-of-n.chain-manifest.v1",
+  "require_full_chain": true,
+  "plate": {
+    "path": "build/local-void-overlay/void-pass1-clean-plate.mp4",
+    "frames": 96,
+    "fps": "24000/1001"
+  },
+  "target_mask": {
+    "path": "build/local-void-overlay/input-masks/mask-000001.mp4",
+    "polarity": "roi_black"
+  },
+  "background_prompt": "a plain gray studio floor",
+  "thresholds": {
+    "changed_threshold": 12.0,
+    "min_object_coverage": 0.02,
+    "min_object_precision": 0.35,
+    "max_background_change": 0.08,
+    "max_temporal_pop": 0.9,
+    "min_remask_agreement": 0.5
+  },
+  "candidates": [
+    {
+      "id": "smooth-04",
+      "kind": "fitted_insertion",
+      "insertion_video": {
+        "path": "build/local-void-overlay/candidate-smooth-04-insertion.mp4"
+      },
+      "inserted_mask": {
+        "path": "build/local-void-overlay/candidate-smooth-04-inserted-mask.mp4"
+      },
+      "cleanup_mask": {
+        "path": "build/local-void-overlay/candidate-smooth-04-cleanup-mask.mp4"
+      },
+      "cleanup_ring_pixels": 96,
+      "fit": {
+        "asset": "fitted-capsule-proxy",
+        "pose_series": "build/local-void-overlay/smooth-04-poses.json",
+        "smoothing_passes": 4,
+        "transform": {
+          "dx": -42.0,
+          "dy": 48.0,
+          "scale": 1.1
+        },
+        "lighting": {
+          "key_energy": 180.0,
+          "key_size": 2.5,
+          "key_location": [-1.0, -2.0, 2.5],
+          "key_rotation_deg": [60.0, 0.0, -20.0]
+        }
+      },
+      "pass2": {
+        "native": {
+          "path": "build/local-void-overlay/pass2/smooth-04-native.mp4",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "width": 672,
+          "height": 384,
+          "frames": 85,
+          "fps": "12/1"
+        },
+        "retimed": {
+          "path": "build/local-void-overlay/pass2/smooth-04-retimed.mp4",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "width": 672,
+          "height": 384,
+          "frames": 85,
+          "fps": "24000/1001"
+        },
+        "result": {
+          "path": "build/local-void-overlay/pass2/smooth-04-no-pass2-result.mp4",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "width": 672,
+          "height": 384,
+          "frames": 85,
+          "fps": "24000/1001"
+        },
+        "comparator": {
+          "path": "build/local-void-overlay/pass2/smooth-04-comparator.json",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    },
+    {
+      "id": "smooth-06",
+      "kind": "fitted_insertion",
+      "insertion_video": {
+        "path": "build/local-void-overlay/candidate-smooth-06-insertion.mp4"
+      },
+      "inserted_mask": {
+        "path": "build/local-void-overlay/candidate-smooth-06-inserted-mask.mp4"
+      },
+      "cleanup_mask": {
+        "path": "build/local-void-overlay/candidate-smooth-06-cleanup-mask.mp4"
+      },
+      "cleanup_ring_pixels": 96,
+      "pass2": {
+        "native": {
+          "path": "build/local-void-overlay/pass2/smooth-06-native.mp4",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "width": 672,
+          "height": 384,
+          "frames": 85,
+          "fps": "12/1"
+        },
+        "retimed": {
+          "path": "build/local-void-overlay/pass2/smooth-06-retimed.mp4",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "width": 672,
+          "height": 384,
+          "frames": 85,
+          "fps": "24000/1001"
+        },
+        "result": {
+          "path": "build/local-void-overlay/pass2/smooth-06-no-pass2-result.mp4",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "width": 672,
+          "height": 384,
+          "frames": 85,
+          "fps": "24000/1001"
+        },
+        "comparator": {
+          "path": "build/local-void-overlay/pass2/smooth-06-comparator.json",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    }
+  ]
+}
