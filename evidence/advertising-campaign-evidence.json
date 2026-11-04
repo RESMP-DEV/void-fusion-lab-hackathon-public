@@ -1,0 +1,114 @@
+{
+  "schema": "void-fusion-lab.advertising-campaign.v2",
+  "recorded_at": "2026-11-04T01:50:00Z",
+  "operator": "Void Fusion team agents with representative acceptance",
+  "premise": "Replace a visible tire in finished advertising footage while preserving the surrounding action, then refine only a bounded cleanup ring.",
+  "selection": {
+    "source_material": "transformed fair-use advertising research footage; source media is not committed",
+    "semantic_gate": "continuous non-empty tire-mask run plus independent tire/wheel classification",
+    "recovered_runs": 17,
+    "recovered_frames": 465,
+    "pass1_sequences_packaged": 17,
+    "quadmask_readback_pass": 17,
+    "pass1_success": "17/17",
+    "pass2_success": "17/17",
+    "final_visibility_rejection": {
+      "sequence": "ad2-shot-15",
+      "reason": "one of eight refined frames had zero detectable brand pixels",
+      "action": "excluded before assembly"
+    },
+    "retained_shots": 16,
+    "retained_frames": 457,
+    "retained_duration_seconds": 19.041666666666668,
+    "retained_brand_visible_frames": 457
+  },
+  "runtime": {
+    "sam": {
+      "model": "Meta SAM 3.1",
+      "runtime": "MuggledSAM community runtime",
+      "precision": "bf16",
+      "prompt": "tire",
+      "non_claim": "community runtime output, not official-predictor ground truth"
+    },
+    "void": {
+      "revision": "e3914f8f551dd4b880661991fd6b28cd1699a97a",
+      "geometry": "672x384",
+      "source_cadence": "24 fps",
+      "void_writer_cadence": "12 fps",
+      "repair": "trim to the original frame count and halve PTS before retiming to 24 fps",
+      "pass1_checkpoint_sha256": "78cec135c557afe063364602e1038170a49bd5bd3eb909f6b7e30a070173e935",
+      "pass2_checkpoint_sha256": "4445d063c3044d0c827ca728387ecd2aecc5344274a4b73d7091e27ec290ec41",
+      "steps_requested": 50
+    },
+    "replacement": {
+      "renderer": "deterministic fitted tire renderer",
+      "brand_text": "MICHELIN",
+      "cleanup_radius_pixels": 16,
+      "non_claim": "not learned image-to-3D reconstruction, physics simulation, or a third-party brand asset"
+    }
+  },
+  "measurements": {
+    "retained_pass2_brand_pixels": {
+      "minimum": 466,
+      "mean": 9378.13249469809,
+      "maximum": 32486
+    },
+    "retained_pass2_object_preservation_changed_ratio": {
+      "minimum": 0.05610792315881805,
+      "mean": 0.16247662927043424,
+      "maximum": 0.4420624631703005
+    },
+    "retained_pass2_cleanup_ring_changed_ratio": {
+      "minimum": 0.09514795776604612,
+      "mean": 0.23458897170536033,
+      "maximum": 0.401943528436607
+    },
+    "retained_pass2_background_changed_ratio": {
+      "minimum": 0.008010056924628332,
+      "mean": 0.038057468844662365,
+      "maximum": 0.14449859496882
+    }
+  },
+  "public_artifacts": {
+    "release_tag": "v2.0.0",
+    "long_form": {
+      "url": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v2.0.0/void-fusion-advertising-2026-11-03.mp4",
+      "bytes": 62363142,
+      "sha256": "821eadc309574bf286c92172c31f493b3f0acb062f8633def778f0f5aca3c0cf",
+      "geometry": "1920x1080",
+      "frames": 2573,
+      "duration_seconds": 107.208333,
+      "fps": 24
+    },
+    "comparison_master": {
+      "url": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v2.0.0/void-fusion-five-stage-comparison-2026-11-03.mp4",
+      "bytes": 17567628,
+      "sha256": "2d74acfa057debf29bbbca7552a1f8843706807a46b03594e6fcd4f2e9e63ac5",
+      "geometry": "3360x440",
+      "frames": 457,
+      "duration_seconds": 19.041667,
+      "fps": 24
+    },
+    "contact_sheet": {
+      "url": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v2.0.0/void-fusion-campaign-four-stage-proof-2026-11-03.jpg",
+      "bytes": 2196411,
+      "sha256": "89c55d13f3e6df056e41af255ef42b1882709051fc6c4a426d642ab084d98202"
+    }
+  },
+  "software_evidence": {
+    "focused_tests": "uv run pytest scripts/tests/test_advertising_tire_asset.py scripts/tests/test_assemble_advertising_reel.py -q: 35 passed",
+    "scaffold_gate": "just check: aggregate PASS",
+    "quality_gate": "just quality: ruff, format, shellcheck, ty, pytest aggregate PASS",
+    "pull_request": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon/pull/43",
+    "merge_commit": "825937d505abab3fc8069171676cdb1cda0ab742"
+  },
+  "non_claims": [
+    "The replacement tire is deterministic and 2.5D-looking, not learned image-to-3D reconstruction or physical simulation.",
+    "Comparator metrics quantify pixel change; they do not prove artistic quality or photorealism.",
+    "Pass 2 changes the replacement materially in some retained shots and those ranges are reported.",
+    "The MuggledSAM runtime is not the pinned official SAM 3.1 predictor and its masks are not ground truth.",
+    "The SAM 3.1 masks are not official-predictor ground truth.",
+    "Source advertising media and model checkpoints are not committed to this repository.",
+    "This evidence records the campaign result; it does not claim production readiness or legal clearance."
+  ]
+}

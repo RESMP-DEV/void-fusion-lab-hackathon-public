@@ -1,78 +1,69 @@
 # Architecture and status
 
-Void Fusion is a model-conditioned video replacement runtime. It combines
-Meta SAM 3.1 perception, bounded reasoning/fusion, Netflix VOID inpainting, a
-fitted 3D insertion lane, and measured Best-of-N selection.
+Void Fusion is a visible advertising-object replacement runtime. The v2 campaign
+uses Meta SAM 3.1 to track one tire through finished advertising footage, VOID
+Pass 1 to remove that tire and reconstruct the wheel well, a deterministic fitted
+Michelin-style replacement, and insertion-aware VOID Pass 2 to refine only a
+bounded cleanup ring.
 
-## Current pipeline
+## Current campaign pipeline
 
-1. A natural-language request is converted into a strict target description and
-   candidate preserve/affected semantics. Muse Spark participates in a bounded
-   generation/critique loop; deterministic validators reject invalid prompt
-   shapes before downstream use.
-2. Meta SAM 3.1 receives an explicit concrete object concept and produces the
-   dense frame-aligned anchor mask. It is the perception anchor, not an
-   unconstrained semantic oracle.
-3. Reasoning experts are normalized to coordinate/probability fields. The fusion
-   layer converts probabilities to logits, applies shared temperature scaling,
-   calibrates expert weights, records disagreement, and escalates ambiguous
-   selections instead of silently choosing a different object.
-4. The fused primary and affected regions become the exact VOID quadmask:
-   `0` remove, `63` overlap, `127` affected, and `255` keep. VOID Pass 1 removes
-   the original object and reconstructs a clean plate.
-5. A fitted 3D proxy is posed from measured scene cues and composited onto the
-   clean plate. The inserted object is marked keep. A dilated cleanup ring is
-   marked affected/remove. VOID Pass 2 refines only that ring.
-6. A strict comparator aligns exact rational timestamps, geometry, and frame
-   counts, then measures object preservation, cleanup-ring change, background
-   change, and temporal stability. Best-of-N ranks complete candidates using the
-   pre-insertion score plus these measured Pass2 signals.
+1. Forward-only SAM 3.1 runs recover continuous tire masks from verified tire
+   anchors. Empty, unstable, road-sized, mascot, and otherwise non-tire runs are
+   rejected before CUDA inpainting.
+2. The selected tire becomes the exact VOID Pass 1 quadmask: tire `0` remove,
+   bounded cleanup ring `127` affected, and untouched background `255` keep.
+3. VOID Pass 1 produces a 12 fps output. The downstream lane trims temporal
+   padding and halves PTS to recover the exact selected frame count at the
+   original 24 fps cadence.
+4. The replacement lane fits the tire trajectory, renders a visible black tire
+   with a yellow Michelin-style brand band, and composites it over the clean
+   plate. It writes an ROI-black inserted mask and a full 16-pixel ROI-black
+   cleanup ring.
+5. The insertion-aware quadmask marks the replacement and untouched background
+   keep, and only the cleanup ring affected. Frame zero follows the affected-ring
+   contract and is fully keep.
+6. VOID Pass 2 refines the staged sequences. The comparator aligns exact
+   geometry, frame count, FPS, and timestamps, then measures object preservation,
+   cleanup-ring change, background change, and temporal warnings.
+7. The final gate rejects a refined frame if the inserted brand band is no longer
+   detectable. The assembler separately rejects a missing stage, a cadence
+   mismatch, or an insertion nearly identical to its clean plate.
 
-## Real result
+## V2 campaign result
 
-Four fitted candidates were exported as complete 85-frame, 672x384 chains and
-executed through VOID Pass2 with the same seed. All four completed 50/50 steps.
-The full-chain selector ranked:
+| Stage | Result |
+| --- | ---: |
+| Continuous tire runs recovered | 17 / 465 frames |
+| VOID Pass 1 successes | 17 / 17 |
+| VOID Pass 2 successes | 17 / 17 |
+| Rejected by final brand gate | 1 run / 8 frames |
+| Retained campaign | 16 shots / 457 frames / 19.042 s |
+| Retained brand-visible frames | 457 / 457 |
+| Long-form presentation | 2,573 frames / 107.208 s / 1920x1080 |
 
-1. `smooth-00`, objective `0.4767313284`
-2. `smooth-06`, objective `0.4765965357`
-3. `smooth-02`, objective `0.4760929340`
-4. `smooth-04`, objective `0.4753241035`
+The retained Pass 2 object-preservation changed ratio ranges from 5.61% to
+44.21%, the cleanup-ring changed ratio from 9.51% to 40.19%, and the background
+changed ratio from 0.80% to 14.45%. Exact per-shot values are recorded in
+`evidence/advertising-campaign-evidence.json`.
 
-`smooth-00` was selected as the strongest complete chain under the declared
-objective.
+## Owned code boundaries
 
-The full-chain objective is:
-
-```text
-0.35 * pre_pass2_objective
-+ 0.25 * (1 - object_preservation_changed_ratio)
-+ 0.20 * (1 - background_changed_ratio)
-+ 0.20 * (1 - temporal_pop_score)
-```
-
-The sanitized submission evidence carries the exact pre-Pass2 objectives and
-metrics needed to reproduce this ranking.
+| Area | Owner |
+| --- | --- |
+| Fitted replacement renderer | `scripts/advertising_tire_asset.py` |
+| Multi-shot reel assembler and visibility gate | `scripts/assemble_advertising_reel.py` |
+| Pass 2 comparison | `scripts/pass2_compare.py` |
+| VOID sequence packaging | `scripts/package_quadmask.py` |
+| Media and quadmask contracts | `src/samurai/media.py`, `src/samurai/quadmask.py` |
 
 ## Important boundaries
 
-- Comparator values quantify change from the no-Pass2 insertion; they are not
-  an artistic-quality score.
-- Every current real comparator reports temporal pop `1.0` and a frame-zero
-  lead-in violation. These warnings are retained.
-- Sparse lower-body ownership passes only frames `0`, `1`, `7`, and `13` of 96.
-  The system does not claim continuous pose ownership or full-body physics.
-- The fitted asset is a model-free pneumatic proxy, not learned image-to-3D
-  generation.
-- Private source media, model weights, generated outputs, machine paths, and
-  review history are not redistributed. Sanitized digests bind the executed
-  artifacts in `evidence/submission-evidence.json`.
-
-## Code boundaries
-
-- Canonical Python lives in `src/samurai/` and does not import `sam2`.
-- SAM 3.1 and VOID remain separate execution lanes with separate dependencies.
-- Gray masks are encoded as lossless H.264 `yuv444p` at `qp=0`.
-- Best-of-N must consume complete, digest-bound candidate chains; missing or
-  stale Pass2 artifacts fail closed.
-- The base checks are `just check` and `just quality`.
+- The replacement is deterministic and 2.5D-looking. It is not learned
+  image-to-3D reconstruction, physical simulation, or a claim of photorealism.
+- Pass 2 materially changes the replacement in some retained shots. The changed
+  ratios and temporal warnings are retained rather than hidden.
+- Comparator values quantify pixel change, not artistic quality.
+- The SAM 3.1 execution used the community MuggledSAM runtime; its masks are not presented as ground truth.
+- Source media, checkpoints, private paths, credentials, and private review
+  history are not committed.

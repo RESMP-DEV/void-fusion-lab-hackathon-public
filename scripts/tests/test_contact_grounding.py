@@ -973,7 +973,9 @@ def test_the_cli_streams_gray_frames_and_never_builds_a_whole_clip_copy(
 
 def test_the_public_evidence_pins_the_contact_grounding_boundary() -> None:
     payload = json.loads(
-        (REPOSITORY_ROOT / "evidence" / "submission-evidence.json").read_text(encoding="utf-8")
+        (REPOSITORY_ROOT / "evidence" / "historical-full-chain-evidence.json").read_text(
+            encoding="utf-8"
+        )
     )
 
     # The public export pins the executed lane by revision and binds the
@@ -993,8 +995,8 @@ def test_the_public_evidence_pins_the_contact_grounding_boundary() -> None:
 
     # The public plan states the same ownership boundary the evidence records.
     plan = (REPOSITORY_ROOT / "docs" / "architecture.md").read_text(encoding="utf-8")
-    assert "frames `0`, `1`, `7`, and `13` of 96" in plan
-    assert "does not claim continuous pose ownership" in plan
+    assert "not learned" in plan
+    assert "not presented as ground truth" in plan
 
     # The sanitized export carries no private machine path. The token is
     # assembled here so this guard does not itself put a home-absolute path

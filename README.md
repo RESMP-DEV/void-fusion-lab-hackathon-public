@@ -1,124 +1,94 @@
-# Void Fusion
+# Void Fusion: visible tire replacement for finished advertising footage
 
-Void Fusion is a model-conditioned video replacement system. It gives a film or
-previsualization team a repeatable way to change the identity of an object in an
-existing shot: track the original object, remove it, insert a fitted 3D
-replacement, refine only the seam, and measure what changed. The goal is to
-avoid a reshoot when the action is right but an object, product, stand-in, or
-character must change.
+Void Fusion lets an advertising team replace one tire in already-shot footage:
+Meta SAM 3.1 tracks the existing wheel frame by frame, VOID Pass 1 removes it and
+rebuilds the wheel well, a visible Michelin-style replacement follows the same
+motion, and insertion-aware VOID Pass 2 refines only the cleanup seam.
 
-In one sentence: **Void Fusion changes who or what appears in an existing video
-by automatically finding one selected object, erasing it, inserting a
-replacement that follows the original motion, and measuring whether the result
-stays believable.**
+## Watch the v2 demo
 
-**Watch the 2 minute 36 second demo:**
-[void-fusion-demo-2026-11-03-public.mp4](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v1.0.0/void-fusion-demo-2026-11-03-public.mp4)
+- [107.21-second long-form demo](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v2.0.0/void-fusion-advertising-2026-11-03.mp4)
+- [Five-stage comparison master](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v2.0.0/void-fusion-five-stage-comparison-2026-11-03.mp4)
+- [Four-stage campaign contact sheet](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v2.0.0/void-fusion-campaign-four-stage-proof-2026-11-03.jpg)
 
-The narrated demo shows one real scene as a four-panel comparison: the original
-shot, the selected object mask, the fitted 3D insertion before refinement, and
-the selected result after the second VOID pass. It explains the model roles,
-summarizes the four-candidate measurement, names the selected candidate, and
-states the measured limitations in plain language.
+The long-form demo deliberately shows five uninterrupted blocks: original
+commercial footage, explicit red tire selection, clean plate, visible branded
+replacement, and refined result. It is not a subtle invisible edit.
 
-## What it does
+## Result
 
-1. **Select and track.** Meta SAM 3.1 provides the dense object anchor. Model
-   reviewers propose target, preserve, and affected semantics; those judgments
-   are converted into aligned probability fields and fused numerically.
-2. **Remove.** The decision becomes the exact VOID quadmask. VOID Pass 1 erases
-   the original object and reconstructs a clean plate.
-3. **Insert.** A model-free fitted 3D proxy is posed over that plate. The
-   inserted object is marked keep; only the surrounding blend ring is marked
-   for cleanup.
-4. **Refine.** VOID Pass 2 refines the cleanup ring; the comparator then
-   reports how much the inserted object actually changed.
-5. **Measure.** The no-Pass2 and Pass2 results are compared across exact
-   timestamps, how much the inserted object and untouched background changed,
-   and temporal stability. Best-of-N runs the same complete chain over
-   multiple fitted candidates and selects the strongest complete result.
+| Measure | Result |
+| --- | ---: |
+| Continuous tire masks recovered | 17 runs / 465 frames |
+| VOID Pass 1 successes | 17 / 17 |
+| VOID Pass 2 successes | 17 / 17 |
+| Retained after final visibility gate | 16 shots / 457 frames |
+| Underlying selected action | 19.042 seconds at 24 fps |
+| Long-form presentation | 2,573 frames / 107.208 seconds / 1920x1080 |
 
-This is not a manual video editor and not an unconstrained text-to-video
-generator. The contribution is the auditable control system around the models.
+One eight-frame Pass 2 run was excluded because one frame had zero detectable
+brand pixels. Every frame in the retained campaign passed the brand-visibility
+check. The minimum retained brand-pixel count is 466; the mean is approximately
+9,378 pixels per frame.
 
-## Real full-chain result
+The retained Pass 2 runs have:
 
-The retained real-scene run exported four fitted candidates, created
-deterministic 85-frame execution derivatives, and executed VOID Pass2 once per
-candidate with seed 42 and 50 steps. All four completed.
+- object-preservation changed ratio: minimum 5.61%, mean 16.25%, maximum 44.21%;
+- cleanup-ring changed ratio: minimum 9.51%, mean 23.46%, maximum 40.19%;
+- background changed ratio: minimum 0.80%, mean 3.81%, maximum 14.45%.
 
-A changed ratio measures the fraction of a region that changed; lower is less
-change, not better artistic quality. The temporal warning is `1.0`, the maximum
-reported pop. The full-chain objective combines the pre-insertion score with
-these change and stability measurements; higher is better only within this
-declared formula.
+These are change measurements, not claims of photorealism or artistic quality.
 
-| Candidate | Object changed | Background changed | Full-chain objective |
-|---|---:|---:|---:|
-| smooth-00 | 0.594590 | 0.151184 | **0.476731** |
-| smooth-06 | 0.595163 | 0.152393 | 0.476597 |
-| smooth-02 | 0.596139 | 0.153477 | 0.476093 |
-| smooth-04 | 0.595397 | 0.153359 | 0.475324 |
+## Why this is not one whole-scene video generator
 
-The full-chain selector chose **smooth-00**. Every comparator currently reports
-a maximum temporal warning and a frame-zero lead-in violation, a structural
-warning at the first frame; those failures remain visible rather than being
-presented as artistic quality. The execution derivatives cover 85 frames while
-pose ownership is measured over the 96-frame source cadence. Sparse pose
-ownership passes on only 4 of those 96 frames, so the demo claims a fitted
-proxy, not continuous full-body physics.
+The real advertising footage remains the baseline. SAM 3.1 identifies where the
+selected tire appears in every retained frame. VOID Pass 1 changes the selected
+tire region into a clean plate. The replacement renderer fits the tire trajectory
+and remains visible. The insertion-aware quadmask marks that replacement as keep
+and exposes only a bounded cleanup ring to VOID Pass 2. Comparator reports then
+separate object preservation, cleanup-ring change, background change, and
+temporal warnings.
 
-Sanitized execution parameters, model/checkpoint identity, execution log and
-output digests, comparator-report digests, the demo asset digest, ranking, and
-non-claims are retained in
-[`evidence/submission-evidence.json`](evidence/submission-evidence.json).
-Private media, full command lines, provider response bodies, and private review
-history are not redistributed.
+This keeps the useful parts of the original shoot: camera motion, road, vehicle,
+performance, lighting, and editing. It changes the advertising object rather than
+asking a generator to reinvent the entire commercial.
 
-## Why Meta AI is central
+## Model roles
 
-- **SAM 3.1** supplies the dense, frame-aligned perception anchor for the
-  selected object.
-- **Muse Spark** participates in the bounded target/affected prompt loop.
-- Reasoning-model outputs are never accepted as prose. Coordinates and concepts
-  are validated, rasterized, temperature-scaled, and fused under the same
-  numerical contract as the dense expert.
-- Low-confidence selection escalates instead of silently changing the target.
+- **Meta SAM 3.1** provides dense frame-aligned tire masks and the visible red
+  selection overlay.
+- **Netflix VOID Pass 1** removes the tracked tire and reconstructs the road and
+  wheel well.
+- **The deterministic replacement lane** fits a visible Michelin-style tire to
+  the tracked ellipse trajectory. It is not claimed to be learned image-to-3D
+  reconstruction or physics simulation.
+- **Netflix VOID Pass 2** sees an insertion-aware quadmask: replacement keep,
+  untouched background keep, and cleanup ring affected.
+- **Comparator and assembly gates** reject missing stages, cadence mismatches,
+  near-invisible insertions, and refined frames without visible brand pixels.
 
-## Quick start
-
-Prerequisites are `uv`, `just`, `shellcheck`, and `ffmpeg`/`ffprobe`.
-The SAM 3.1 and VOID lanes additionally require their documented CUDA,
-checkpoint, and Python dependencies.
+## Reproduce the software gates
 
 ```bash
 uv sync
 just check
 just quality
+uv run pytest scripts/tests/test_advertising_tire_asset.py \
+  scripts/tests/test_assemble_advertising_reel.py -q
 ```
 
-The optional SAM 3.1 dependencies use `just setup-sam31`. The separately pinned
-VOID lane uses `just setup-void`; it is intentionally not merged into the SAM
-environment.
+The heavy SAM 3.1 and VOID lanes require their documented CUDA environments and
+checkpoints; the repository tests intentionally do not download checkpoints or
+call external APIs.
 
-## Evidence and provenance
+## Evidence and limitations
 
-- [`docs/architecture.md`](docs/architecture.md) is the canonical technical
-  status document.
-- [`docs/presentation.md`](docs/presentation.md) is the judge-facing
-  plain-language premise, demo map, rubric breakdown, and Q&A guide.
-- [`evidence/submission-evidence.json`](evidence/submission-evidence.json)
-  binds the real four-candidate execution.
-- [`provenance/daily/`](provenance/daily) is the anonymized cumulative
-  eligibility timeline.
-- [`docs/contribution-manifest.md`](docs/contribution-manifest.md) separates the
-  pre-event baseline from event-built work.
+- Sanitized campaign evidence: [`evidence/advertising-campaign-evidence.json`](evidence/advertising-campaign-evidence.json)
+- Judge-facing presentation guide: [`docs/presentation.md`](docs/presentation.md)
 
-Private source media, model weights, private pipeline outputs, credentials,
-machine paths, and private review history are intentionally absent. They are
-bound by SHA-256 in sanitized receipts rather than redistributed here.
-
-## Team
-
-Kearm (representative), Eden Chan, and Jason Lu built Void Fusion for the Meta
-Global AI Developer Hackathon.
+Known limitations are explicit: the replacement renderer is deterministic and
+2.5D-looking rather than a learned 3D reconstruction; Pass 2 changes the
+replacement more than a production compositor would want in some shots; temporal
+pop warnings remain; and the source is transformed fair-use advertising footage
+for this research demonstration. No source video or model checkpoint is committed
+to the repository.
