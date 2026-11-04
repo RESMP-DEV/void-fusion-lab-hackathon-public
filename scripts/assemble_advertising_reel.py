@@ -629,6 +629,8 @@ def main(argv: list[str] | None = None) -> int:
     master_path = (
         args.master or manifest_path.parent / f"{manifest_path.stem}-comparison-master.mp4"
     )
+    if reel_path.resolve() == master_path.resolve():
+        raise AdvertisingReelError("--reel and --master must name different files")
     probes: dict[str, dict[str, StageProbe]] = {}
     for shot in shots:
         shot_probes = {stage: probe_stage(shot.stages[stage]) for stage in STAGES}

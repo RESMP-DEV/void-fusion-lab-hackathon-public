@@ -148,6 +148,17 @@ def test_fit_ellipse_returns_none_for_an_empty_region():
     assert fit_ellipse(np.zeros((10, 10), dtype=bool)) is None
 
 
+def test_fit_ellipse_ignores_a_disconnected_stray_region():
+    mask = ellipse_mask(80.0, 60.0, 26.0, 20.0)
+    mask[10:25, 10:25] = True
+
+    fit = fit_ellipse(mask)
+
+    assert fit is not None
+    assert fit.center_x == pytest.approx(80.0, abs=1.0)
+    assert fit.center_y == pytest.approx(60.0, abs=1.0)
+
+
 def test_smoothing_holds_a_missing_frame_and_keeps_the_series():
     first = fit_ellipse(ellipse_mask(40.0, 60.0, 26.0, 20.0))
     second = fit_ellipse(ellipse_mask(50.0, 60.0, 26.0, 20.0))
@@ -162,6 +173,36 @@ def test_smoothing_holds_a_missing_frame_and_keeps_the_series():
     expected = (first.center_x + second.center_x) / 2.0
     assert smoothed[1].center_x == pytest.approx(expected, abs=2.0)
     assert smoothed[0].center_x == pytest.approx(first.center_x, abs=1.5)
+
+
+def test_gap_frames_hold_the_nearest_fitted_pose():
+    before = TireFit(
+        center_x=0.0, center_y=0.0, radius_x=10.0, radius_y=8.0, angle_degrees=0.0, area=100
+    )
+    after = TireFit(
+        center_x=30.0, center_y=0.0, radius_x=10.0, radius_y=8.0, angle_degrees=0.0, area=100
+    )
+
+    smoothed = smooth_fit_series([before, None, None, after], window=1)
+
+    assert smoothed[1].center_x == pytest.approx(before.center_x)
+    assert smoothed[1].held is True
+    assert smoothed[2].center_x == pytest.approx(after.center_x)
+    assert smoothed[2].held is True
+
+
+def test_orientation_smoothing_handles_the_angle_wrap():
+    positive = TireFit(
+        center_x=0.0, center_y=0.0, radius_x=10.0, radius_y=8.0, angle_degrees=89.0, area=100
+    )
+    negative = TireFit(
+        center_x=0.0, center_y=0.0, radius_x=10.0, radius_y=8.0, angle_degrees=-89.0, area=100
+    )
+
+    smoothed = smooth_fit_series([positive, negative], window=2)
+
+    assert smoothed[0].angle_degrees == pytest.approx(90.0, abs=1.0)
+    assert smoothed[1].angle_degrees == pytest.approx(90.0, abs=1.0)
 
 
 def test_render_tile_alpha_covers_the_fitted_ellipse():
@@ -373,6 +414,38 @@ def test_cli_fails_closed_when_the_mask_geometry_differs(tmp_path):
     assert not (output / "advertised.mp4").exists()
 
 
+def test_cli_fails_closed_when_mask_cadence_differs(tmp_path):
+    inputs = build_inputs(tmp_path / "inputs")
+    fast_video = tmp_path / "fast-scene.mp4"
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-i",
+            str(inputs["video"]),
+            "-vf",
+            "setpts=N/(24*TB),fps=24",
+            "-c:v",
+            "libx264",
+            "-crf",
+            "12",
+            "-pix_fmt",
+            "yuv420p",
+            "-an",
+            "-y",
+            str(fast_video),
+        ],
+        check=True,
+    )
+    inputs = {**inputs, "video": fast_video}
+    output = tmp_path / "out"
+
+    assert run_cli(inputs, output) == 2
+    assert not (output / "advertised.mp4").exists()
+
+
 def test_cli_fails_closed_when_no_frame_holds_a_tire(tmp_path):
     inputs = build_inputs(tmp_path / "inputs")
     empty_mask = tmp_path / "empty-mask.mp4"
@@ -409,3 +482,31 @@ def test_cli_rejects_an_invalid_smoothing_window(tmp_path):
     output = tmp_path / "out"
 
     assert run_cli(inputs, output, extra=["--smoothing-window", "0"]) == 2
+    assert not (output / "advertised.mp4").exists()
+
+
+def test_cli_rejects_identical_mask_output_paths(tmp_path):
+    inputs = build_inputs(tmp_path / "inputs")
+    output = tmp_path / "out"
+
+    exit_code = main(
+        [
+            "--input",
+            str(inputs["video"]),
+            "--primary-mask",
+            str(inputs["mask"]),
+            "--plate",
+            str(inputs["plate"]),
+            "--output",
+            str(output / "advertised.mp4"),
+            "--inserted-mask",
+            str(output / "same-mask.mp4"),
+            "--cleanup-mask",
+            str(output / "same-mask.mp4"),
+            "--contact-sheet",
+            str(output / "contact-sheet.png"),
+        ]
+    )
+
+    assert exit_code == 2
+    assert not (output / "advertised.mp4").exists()

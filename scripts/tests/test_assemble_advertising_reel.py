@@ -525,6 +525,25 @@ def test_cli_fails_closed_when_the_insertion_is_below_the_change_threshold(tmp_p
     assert "nearly identical" in result.stderr
 
 
+def test_cli_rejects_identical_reel_and_master_paths(tmp_path) -> None:
+    shot = build_shot(tmp_path, "shot-one")
+    manifest = write_manifest(tmp_path / "spot.json", [("shot-01", "WIDE", shot)])
+    output = tmp_path / "same-output.mp4"
+
+    result = run_cli(
+        "--manifest",
+        str(manifest),
+        "--reel",
+        str(output),
+        "--master",
+        str(output),
+    )
+
+    assert result.returncode == 2
+    assert "--reel and --master must name different files" in result.stderr
+    assert not output.exists()
+
+
 def test_insertion_change_threshold_uses_the_documented_channel_mean(tmp_path) -> None:
     plate = tmp_path / "plate.png"
     inserted = tmp_path / "inserted.png"
