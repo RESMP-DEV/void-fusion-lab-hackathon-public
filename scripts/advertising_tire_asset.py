@@ -195,7 +195,13 @@ def run_tool(command: list[str], *, context: str) -> None:
     completed = subprocess.run(command, check=False, capture_output=True, text=True)
     if completed.returncode != 0:
         detail = (completed.stderr or completed.stdout).strip().splitlines()
-        suffix = f": {detail[-1]}" if detail else ""
+        if detail:
+            first = detail[0]
+            last = detail[-1]
+            diagnostic = first if len(detail) == 1 else f"{first} ... {last}"
+            suffix = f": {diagnostic} ({len(detail)} lines)"
+        else:
+            suffix = ""
         raise AdvertisingTireAssetError(f"{context} exit {completed.returncode}{suffix}")
 
 
@@ -490,13 +496,25 @@ def _render_glyph(
     font: ImageFont.FreeTypeFont | ImageFont.ImageFont,
 ) -> tuple[np.ndarray, float]:
     """Return one glyph bitmap and its advance width in pixels."""
-    advance = float(font.getlength(character))
+    advance = _font_advance(font, character)
     bbox = font.getbbox(character)
     width = max(1, int(bbox[2] - bbox[0]) + 4)
     height = max(1, int(bbox[3] - bbox[1]) + 4)
     image = Image.new("L", (width, height), 0)
     ImageDraw.Draw(image).text((2 - bbox[0], 2 - bbox[1]), character, fill=255, font=font)
     return np.asarray(image), advance
+
+
+def _font_advance(
+    font: ImageFont.FreeTypeFont | ImageFont.ImageFont,
+    character: str,
+) -> float:
+    """Return glyph advance while tolerating Pillow's bitmap-font fallback."""
+    try:
+        return float(font.getlength(character))
+    except AttributeError:
+        bbox = font.getbbox(character)
+        return float(bbox[2] - bbox[0] + 4)
 
 
 def _brand_text_mask(
@@ -519,14 +537,14 @@ def _brand_text_mask(
     arc_length = float(cumulative[samples] - arc_start)
     size = max(9, int(round(0.17 * fit.radius_pixels)))
     font = _font_for(size * SUPERSAMPLE)
-    advances = [float(font.getlength(character)) / SUPERSAMPLE for character in text]
+    advances = [_font_advance(font, character) / SUPERSAMPLE for character in text]
     total = sum(advances) * 1.04
     for _ in range(8):
         if total <= 0.82 * arc_length or size <= 8:
             break
         size = max(8, int(size * 0.85))
         font = _font_for(size * SUPERSAMPLE)
-        advances = [float(font.getlength(character)) / SUPERSAMPLE for character in text]
+        advances = [_font_advance(font, character) / SUPERSAMPLE for character in text]
         total = sum(advances) * 1.04
     if total > arc_length:
         return mask, False
@@ -1099,7 +1117,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         report = run_lane(args)
-    except (AdvertisingTireAssetError, MediaError) as error:
+    except (AdvertisingTireAssetError, MediaError, OSError) as error:
         print(f"error: {error}", file=sys.stderr)
         return EXIT_INPUT_ERROR
     summary = report["summary"]

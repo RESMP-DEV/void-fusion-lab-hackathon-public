@@ -4,11 +4,13 @@ import json
 import subprocess
 from pathlib import Path
 
+import advertising_tire_asset as asset
 import numpy as np
 import pytest
 from advertising_tire_asset import (
     SCHEMA,
     TireFit,
+    _font_advance,
     build_inserted_cleanup_masks,
     composite_tile,
     fit_ellipse,
@@ -17,7 +19,7 @@ from advertising_tire_asset import (
     render_tire_tile,
     smooth_fit_series,
 )
-from PIL import Image
+from PIL import Image, ImageFont
 
 from samurai.media import decode_gray_frames, probe_video, write_gray_video
 
@@ -203,6 +205,24 @@ def test_orientation_smoothing_handles_the_angle_wrap():
 
     assert smoothed[0].angle_degrees == pytest.approx(90.0, abs=1.0)
     assert smoothed[1].angle_degrees == pytest.approx(90.0, abs=1.0)
+
+
+def test_font_advance_supports_pillow_bitmap_fallback():
+    font = ImageFont.load_default()
+
+    advance = _font_advance(font, "M")
+
+    assert advance > 0.0
+
+
+def test_run_tool_preserves_the_first_ffmpeg_diagnostic(monkeypatch):
+    completed = subprocess.CompletedProcess(
+        ["ffmpeg"], returncode=2, stderr="primary failure\nsecondary detail", stdout=""
+    )
+    monkeypatch.setattr(asset.subprocess, "run", lambda *_args, **_kwargs: completed)
+
+    with pytest.raises(asset.AdvertisingTireAssetError, match="primary failure"):
+        asset.run_tool(["ffmpeg"], context="composite video encode")
 
 
 def test_render_tile_alpha_covers_the_fitted_ellipse():
@@ -510,3 +530,29 @@ def test_cli_rejects_identical_mask_output_paths(tmp_path):
 
     assert exit_code == 2
     assert not (output / "advertised.mp4").exists()
+
+
+def test_cli_returns_input_error_for_filesystem_failures(tmp_path, monkeypatch):
+    inputs = build_inputs(tmp_path / "inputs")
+    output = tmp_path / "out"
+    arguments = [
+        "--input",
+        str(inputs["video"]),
+        "--primary-mask",
+        str(inputs["mask"]),
+        "--output",
+        str(output / "advertised.mp4"),
+        "--inserted-mask",
+        str(output / "inserted-mask.mp4"),
+        "--cleanup-mask",
+        str(output / "cleanup-mask.mp4"),
+        "--contact-sheet",
+        str(output / "contact-sheet.png"),
+    ]
+
+    def unavailable(*_args: object, **_kwargs: object) -> dict[str, object]:
+        raise FileNotFoundError("output filesystem unavailable")
+
+    monkeypatch.setattr(asset, "run_lane", unavailable)
+
+    assert main(arguments) == 2
