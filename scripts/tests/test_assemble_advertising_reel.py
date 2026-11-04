@@ -136,6 +136,7 @@ def build_shot(
     frames: int = FRAMES,
     fps: int = FPS,
     inserted: list[np.ndarray] | None = None,
+    pass2: list[np.ndarray] | None = None,
 ) -> dict[str, Path]:
     """Write the five stage videos of one shot and return their paths."""
     root = tmp_path / name
@@ -145,7 +146,7 @@ def build_shot(
         "mask_overlay": mask_overlay_frames(),
         "pass1_clean_plate": clean_plate_frames(),
         "inserted": inserted_frames() if inserted is None else inserted,
-        "pass2": pass2_frames(),
+        "pass2": pass2_frames() if pass2 is None else pass2,
     }
     paths: dict[str, Path] = {}
     for stage, stage_frames in stages.items():
@@ -199,7 +200,10 @@ def decode_frames(video: Path, destination: Path) -> list[np.ndarray]:
 def build_two_shot_spot(tmp_path: Path) -> tuple[Path, list[dict[str, Path]]]:
     """Build a two-shot advertising spot and its manifest."""
     shot_one = build_shot(tmp_path, "shot-one")
-    shot_two = build_shot(tmp_path, "shot-two")
+    distinct_pass2 = [
+        np.clip(frame.astype(int) + 35, 0, 255).astype(np.uint8) for frame in pass2_frames()
+    ]
+    shot_two = build_shot(tmp_path, "shot-two", pass2=distinct_pass2)
     manifest = write_manifest(
         tmp_path / "spot.json",
         [
