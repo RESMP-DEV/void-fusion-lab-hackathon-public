@@ -12,6 +12,91 @@ def load_evidence() -> dict:
     return json.loads(EVIDENCE.read_text(encoding="utf-8"))
 
 
+def test_true3d_campaign_evidence_schema_is_complete() -> None:
+    payload = load_evidence()
+
+    assert set(payload) == {
+        "final_artifacts",
+        "measurements",
+        "non_claims",
+        "premise",
+        "recorded_at",
+        "results",
+        "runtime",
+        "schema",
+        "scope",
+        "summary",
+        "target_description",
+        "validation",
+        "verification_provenance",
+    }
+    assert set(payload["summary"]) == {
+        "all_brand_gates_passed",
+        "all_cleanup_rings_changed",
+        "all_object_regions_unchanged",
+        "brand_visible_frames",
+        "minimum_brand_pixels_required",
+        "pass2_frames_preserved",
+        "pass2_shots",
+        "pre_pass2_frames",
+        "pre_pass2_shots",
+    }
+    assert set(payload["measurements"]) == {
+        "background_changed_ratio",
+        "cleanup_ring_changed_ratio",
+        "min_brand_pixels",
+        "object_changed_ratio",
+    }
+    assert set(payload["runtime"]) == {"blender", "preservation", "void"}
+    assert set(payload["validation"]) == {
+        "all_passed",
+        "cleanup_mask",
+        "glb",
+        "inserted_mask",
+    }
+    assert set(payload["verification_provenance"]) == {
+        "campaign_runtime_dirty",
+        "campaign_runtime_source",
+        "note",
+    }
+    assert set(payload["final_artifacts"]) == {
+        "ad_result_reel",
+        "assembly_report_sha256",
+        "comparison_master",
+        "long_form_demo",
+        "proof_sheet",
+    }
+
+    required_result_fields = {
+        "background_changed_ratio",
+        "blend_sha256",
+        "brand_gate_passed",
+        "cleanup_mask_binary",
+        "cleanup_mask_sha256",
+        "cleanup_ring_changed_ratio",
+        "composite_sha256",
+        "frames",
+        "glb_sha256",
+        "glb_valid",
+        "id",
+        "inserted_mask_binary",
+        "inserted_mask_sha256",
+        "material_count",
+        "mesh_objects",
+        "mesh_vertices",
+        "min_brand_pixels",
+        "native_raw_sha256",
+        "object_changed_ratio",
+        "poses_sha256",
+        "preserved_sha256",
+        "render_manifest_sha256",
+        "retimed_sha256",
+        "temporal_pop_score",
+    }
+    for result in payload["results"]:
+        assert set(result) == required_result_fields
+
+
 def test_true3d_campaign_evidence_binds_the_public_result() -> None:
     payload = load_evidence()
     results = payload["results"]
