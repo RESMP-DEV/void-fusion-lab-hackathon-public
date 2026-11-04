@@ -52,7 +52,7 @@ changed ratio from 0.80% to 14.45%. These aggregate ranges are recorded in
 
 | Area | Owner |
 | --- | --- |
-| Fitted replacement renderer | `scripts/advertising_tire_asset.py` |
+| Fitted replacement renderer and pre-Pass2 brand check | `scripts/advertising_tire_asset.py` |
 | Multi-shot reel assembler and insertion gate | `scripts/assemble_advertising_reel.py` |
 | Pass 2 comparison | `scripts/pass2_compare.py` |
 | VOID sequence packaging | `scripts/package_quadmask.py` |

@@ -34,6 +34,7 @@ from PIL import Image, ImageDraw, ImageFont
 from samurai.media import (
     GrayVideoWriter,
     MediaError,
+    assert_video_alignment,
     decode_gray_frames,
     iter_color_frames,
     probe_video,
@@ -125,6 +126,70 @@ class TireFit:
         return min(self.radius_x, self.radius_y)
 
 
+def _largest_component(mask: np.ndarray) -> np.ndarray:
+    """Return the largest four-connected true component of a binary mask.
+
+    Run-wise union-find avoids a Python frontier proportional to the full
+    frame.  A disconnected stray region therefore cannot shift the fitted
+    ellipse or enlarge it across empty space.
+    """
+    height, width = mask.shape
+    run_rows: list[list[tuple[int, int, int]]] = []
+    parent: list[int] = []
+
+    def find(index: int) -> int:
+        root = index
+        while parent[root] != root:
+            root = parent[root]
+        while parent[index] != root:
+            following = parent[index]
+            parent[index] = root
+            index = following
+        return root
+
+    def union(left: int, right: int) -> None:
+        left_root = find(left)
+        right_root = find(right)
+        if left_root == right_root:
+            return
+        parent[right_root] = left_root
+
+    for row_index in range(height):
+        row = mask[row_index]
+        boundaries = np.diff(np.concatenate(([False], row, [False])).astype(np.int8))
+        starts = np.flatnonzero(boundaries == 1)
+        ends = np.flatnonzero(boundaries == -1)
+        current_runs: list[tuple[int, int, int]] = []
+        previous_runs = run_rows[-1] if run_rows else []
+        previous_index = 0
+        for start, end in zip(starts, ends, strict=True):
+            run_index = len(parent)
+            parent.append(run_index)
+            current_runs.append((int(start), int(end), run_index))
+            while previous_index < len(previous_runs) and previous_runs[previous_index][1] <= start:
+                previous_index += 1
+            scan = previous_index
+            while scan < len(previous_runs) and previous_runs[scan][0] < end:
+                union(run_index, previous_runs[scan][2])
+                scan += 1
+        run_rows.append(current_runs)
+
+    if not parent:
+        return mask.copy()
+    sizes: dict[int, int] = {}
+    for runs in run_rows:
+        for start, end, run_index in runs:
+            root = find(run_index)
+            sizes[root] = sizes.get(root, 0) + end - start
+    largest = max(sizes, key=sizes.__getitem__)
+    result = np.zeros_like(mask, dtype=bool)
+    for row_index, runs in enumerate(run_rows):
+        for start, end, run_index in runs:
+            if find(run_index) == largest:
+                result[row_index, start:end] = True
+    return result
+
+
 def run_tool(command: list[str], *, context: str) -> None:
     """Run an external media tool and fail closed with its own exit code."""
     completed = subprocess.run(command, check=False, capture_output=True, text=True)
@@ -201,6 +266,7 @@ def fit_ellipse(mask: np.ndarray) -> TireFit | None:
     ``2 * sqrt(eigenvalue)``.  Regions below ``MIN_FIT_PIXELS`` pixels have no
     usable fit and return ``None``.
     """
+    mask = _largest_component(mask)
     ys, xs = np.nonzero(mask)
     if ys.size < MIN_FIT_PIXELS:
         return None
@@ -244,40 +310,31 @@ def smooth_fit_series(fits: list[TireFit | None], *, window: int) -> list[TireFi
     """
     if window < 1:
         raise AdvertisingTireAssetError("--smoothing-window must be a positive integer")
-    filled: list[TireFit] = []
-    last: TireFit | None = None
     following: list[TireFit | None] = list(fits)
+    fitted = {index: fit for index, fit in enumerate(following) if fit is not None}
+    filled: list[TireFit] = []
     for index, fit in enumerate(following):
         if fit is not None:
-            last = fit
             filled.append(fit)
             continue
-        if last is not None:
-            filled.append(
-                TireFit(
-                    center_x=last.center_x,
-                    center_y=last.center_y,
-                    radius_x=last.radius_x,
-                    radius_y=last.radius_y,
-                    angle_degrees=last.angle_degrees,
-                    area=last.area,
-                    held=True,
-                )
-            )
-            continue
-        upcoming = next((item for item in following[index + 1 :] if item is not None), None)
-        if upcoming is None:
+        before = max((item for item in fitted if item < index), default=None)
+        after = min((item for item in fitted if item > index), default=None)
+        if before is not None and (after is None or index - before <= after - index):
+            source = fitted[before]
+        elif after is not None:
+            source = fitted[after]
+        else:
             raise AdvertisingTireAssetError(
                 "the primary mask has no fitted tire in any frame; nothing to replace"
             )
         filled.append(
             TireFit(
-                center_x=upcoming.center_x,
-                center_y=upcoming.center_y,
-                radius_x=upcoming.radius_x,
-                radius_y=upcoming.radius_y,
-                angle_degrees=upcoming.angle_degrees,
-                area=upcoming.area,
+                center_x=source.center_x,
+                center_y=source.center_y,
+                radius_x=source.radius_x,
+                radius_y=source.radius_y,
+                angle_degrees=source.angle_degrees,
+                area=source.area,
                 held=True,
             )
         )
@@ -287,8 +344,8 @@ def smooth_fit_series(fits: list[TireFit | None], *, window: int) -> list[TireFi
         low = max(0, index - half)
         high = min(len(filled), index + half + 1)
         neighbourhood = filled[low:high]
-        angles = np.array([math.radians(item.angle_degrees) for item in neighbourhood])
-        direction = math.degrees(
+        angles = np.array([2.0 * math.radians(item.angle_degrees) for item in neighbourhood])
+        direction = 0.5 * math.degrees(
             math.atan2(float(np.sin(angles).mean()), float(np.cos(angles).mean()))
         )
         smoothed.append(
@@ -817,6 +874,10 @@ def build_parser() -> argparse.ArgumentParser:
 
 def run_lane(args: argparse.Namespace) -> dict[str, Any]:
     """Run the advertising tire lane and return its JSON receipt."""
+    if args.inserted_mask.resolve() == args.cleanup_mask.resolve():
+        raise AdvertisingTireAssetError(
+            "--inserted-mask and --cleanup-mask must name different files"
+        )
     if args.cleanup_radius < 1:
         raise AdvertisingTireAssetError("--cleanup-radius must be a positive integer")
     if args.smoothing_window < 1:
@@ -843,6 +904,12 @@ def run_lane(args: argparse.Namespace) -> dict[str, Any]:
                 f"clean plate is {plate_info.width}x{plate_info.height}x{plate_info.frames}, "
                 f"expected {info.width}x{info.height}x{info.frames}"
             )
+    alignment_videos = {"input": args.input, "primary mask": args.primary_mask}
+    if args.plate is not None:
+        alignment_videos["clean plate"] = args.plate
+    assert_video_alignment(
+        alignment_videos, width=info.width, height=info.height, frames=info.frames
+    )
     masks = load_primary_mask(
         args.primary_mask,
         frames=info.frames,
