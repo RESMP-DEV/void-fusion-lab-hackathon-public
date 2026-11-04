@@ -11,6 +11,7 @@ from advertising_tire_asset import (
     SCHEMA,
     TireFit,
     _font_advance,
+    _render_glyph,
     build_inserted_cleanup_masks,
     composite_tile,
     fit_ellipse,
@@ -213,6 +214,18 @@ def test_font_advance_supports_pillow_bitmap_fallback():
     advance = _font_advance(font, "M")
 
     assert advance > 0.0
+
+
+def test_unrenderable_glyph_returns_an_empty_advance(monkeypatch):
+    font = ImageFont.load_default()
+    monkeypatch.setattr(font, "getlength", lambda _character: (_ for _ in ()).throw(AttributeError))
+    monkeypatch.setattr(font, "getbbox", lambda _character: None)
+
+    assert _font_advance(font, "M") == 0.0
+    glyph, advance = _render_glyph("M", font)
+
+    assert glyph.shape == (1, 1)
+    assert advance == 0.0
 
 
 def test_run_tool_preserves_the_first_ffmpeg_diagnostic(monkeypatch):
