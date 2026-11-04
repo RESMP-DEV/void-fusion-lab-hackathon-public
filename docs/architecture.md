@@ -26,9 +26,10 @@ bounded cleanup ring.
 6. VOID Pass 2 refines the staged sequences. The comparator aligns exact
    geometry, frame count, FPS, and timestamps, then measures object preservation,
    cleanup-ring change, background change, and temporal warnings.
-7. The final gate rejects a refined frame if the inserted brand band is no longer
-   detectable. The assembler separately rejects a missing stage, a cadence
-   mismatch, or an insertion nearly identical to its clean plate.
+7. A campaign-level brand audit rejects a refined run if the inserted brand band
+   is no longer detectable in any frame. The assembler separately rejects a
+   missing stage, a cadence mismatch, or a pre-Pass2 insertion nearly identical
+   to its clean plate.
 
 ## V2 campaign result
 
@@ -44,7 +45,7 @@ bounded cleanup ring.
 
 The retained Pass 2 object-preservation changed ratio ranges from 5.61% to
 44.21%, the cleanup-ring changed ratio from 9.51% to 40.19%, and the background
-changed ratio from 0.80% to 14.45%. Exact per-shot values are recorded in
+changed ratio from 0.80% to 14.45%. These aggregate ranges are recorded in
 `evidence/advertising-campaign-evidence.json`.
 
 ## Owned code boundaries
@@ -52,7 +53,7 @@ changed ratio from 0.80% to 14.45%. Exact per-shot values are recorded in
 | Area | Owner |
 | --- | --- |
 | Fitted replacement renderer | `scripts/advertising_tire_asset.py` |
-| Multi-shot reel assembler and visibility gate | `scripts/assemble_advertising_reel.py` |
+| Multi-shot reel assembler and insertion gate | `scripts/assemble_advertising_reel.py` |
 | Pass 2 comparison | `scripts/pass2_compare.py` |
 | VOID sequence packaging | `scripts/package_quadmask.py` |
 | Media and quadmask contracts | `src/samurai/media.py`, `src/samurai/quadmask.py` |
@@ -67,3 +68,5 @@ changed ratio from 0.80% to 14.45%. Exact per-shot values are recorded in
 - The SAM 3.1 execution used the community MuggledSAM runtime; its masks are not presented as ground truth.
 - Source media, checkpoints, private paths, credentials, and private review
   history are not committed.
+- The earlier humanoid full-chain lane measured lower-body ownership on only
+  frames `0`, `1`, `7`, and `13` of 96. That historical lane does not claim continuous pose ownership; the tire campaign likewise claims no full-body physics.

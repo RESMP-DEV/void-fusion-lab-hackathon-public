@@ -64,8 +64,10 @@ asking a generator to reinvent the entire commercial.
   reconstruction or physics simulation.
 - **Netflix VOID Pass 2** sees an insertion-aware quadmask: replacement keep,
   untouched background keep, and cleanup ring affected.
-- **Comparator and assembly gates** reject missing stages, cadence mismatches,
-  near-invisible insertions, and refined frames without visible brand pixels.
+- **Comparator and assembler** align every stage and reject missing media,
+  cadence mismatches, and a pre-Pass2 insertion that is nearly identical to its
+  clean plate. A separate campaign-level brand audit then rejects a refined run
+  when any frame loses detectable brand pixels.
 
 ## Reproduce the software gates
 
