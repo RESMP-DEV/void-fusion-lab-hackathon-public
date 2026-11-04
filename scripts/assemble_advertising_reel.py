@@ -58,6 +58,8 @@ STAGE_CAPTIONS: dict[str, str] = {
 
 DEFAULT_CHANGED_THRESHOLD = 10.0
 DEFAULT_MIN_INSERTION_CHANGED_RATIO = 0.001
+FRAME_TEMPLATE = "frame-{index:06d}.png"
+FRAME_PATTERN = "frame-%06d.png"
 
 LABEL_BACKGROUND = (18, 18, 18)
 LABEL_FOREGROUND = (245, 245, 245)
@@ -410,7 +412,7 @@ def build_reel_frames(
                 frame = handle.convert("RGB")
             frame = pad_even(frame)
             draw_band(frame, text, band, font)
-            frame.save(destination / f"frame-{written:06d}.png")
+            frame.save(destination / FRAME_TEMPLATE.format(index=written))
             written += 1
     return written, width + (width % 2), height + (height % 2)
 
@@ -465,7 +467,7 @@ def build_master_frames(
                     fill=LABEL_FOREGROUND,
                 )
             row = pad_even(row)
-            row.save(destination / f"frame-{written:06d}.png")
+            row.save(destination / FRAME_TEMPLATE.format(index=written))
             written += 1
     return written, width + (width % 2), height + (height % 2)
 
@@ -481,7 +483,7 @@ def encode_frames(frames: Path, output: Path, fps: Fraction, *, lossless: bool) 
         "-framerate",
         fps_text(fps),
         "-i",
-        str(frames / "frame-%06d.png"),
+        str(frames / FRAME_PATTERN),
         "-r",
         fps_text(fps),
         "-c:v",

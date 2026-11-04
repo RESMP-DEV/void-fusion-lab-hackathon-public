@@ -970,8 +970,14 @@ def run_lane(args: argparse.Namespace) -> dict[str, Any]:
         source_frames = iter_color_frames(args.input, root / "source")
         plate_frames = iter_color_frames(args.plate, root / "plate") if args.plate else None
         for index, fit in enumerate(fits):
-            source = next(source_frames)
-            base = next(plate_frames) if plate_frames is not None else source
+            try:
+                source = next(source_frames)
+                base = next(plate_frames) if plate_frames is not None else source
+            except StopIteration as error:
+                raise AdvertisingTireAssetError(
+                    f"a decoded frame iterator exhausted at frame {index}; "
+                    f"expected {info.frames} source/plate/mask frames"
+                ) from error
             tile = render_tire_tile(fit, brand_text=args.brand_text)
             composite = composite_tile(base, tile.rgb, tile.alpha, tile.origin)
             inserted_tile, cleanup_tile = build_inserted_cleanup_masks(
