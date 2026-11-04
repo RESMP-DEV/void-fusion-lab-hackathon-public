@@ -1,0 +1,59 @@
+{
+  "schema": "void-fusion-lab.auto-edit-submission.v1",
+  "recorded_at": "2026-11-04T21:13:05.745401+00:00",
+  "project_name": "VOID Auto-Edit",
+  "thesis": "After one target-point choice, VOID Auto-Edit automates object selection, lossless quadmask generation, VOID removal, and frame-level audit that previously required hours of human footage review.",
+  "final_demo": {
+    "path": "public release asset",
+    "sha256": "77ef47319734f639b86ffff186d1780a6d381b3659b2445d02082611fa8d7fc0",
+    "bytes": 19279697,
+    "duration_seconds": 178.0,
+    "frames": 4267,
+    "width": 1920,
+    "height": 1080,
+    "fps": "24000/1001",
+    "audio": "AAC narration"
+  },
+  "headline_results": {
+    "candidate_C": {
+      "input_frames": 96,
+      "shipped_text_prompt_bystander_spill_pixels_per_frame": "68,355-70,233",
+      "shipped_spill_frames": "96/96",
+      "target_point_referent_lock_judged_bystander_spill": 0,
+      "subject_retention": 0.99995,
+      "mean_iou": 0.467366,
+      "proposed_not_in_force_iou_bar": 0.470294,
+      "void_ghost_frame_0": 41.77,
+      "void_ghost_frame_48": 14.91,
+      "ghost_threshold": 50
+    },
+    "candidate_F": {
+      "dropped_pixels": 503058,
+      "recovered_pixels": 485191,
+      "recovery_fraction": 0.964483,
+      "pooled_iou": 0.986173,
+      "scope": "frames 16-23 only"
+    },
+    "candidate_D": {
+      "frames": 90,
+      "void_ghost_frame_0": 7.84,
+      "ghost_threshold": 50
+    }
+  },
+  "workflow_effect": {
+    "manual_baseline": "A human reviews footage frame by frame, discovers ambiguous referents, corrects masks, reruns inpainting, and compares outputs by eye.",
+    "automatic_path": "Target point once; SAM referent identity, quadmask conversion, VOID execution, and measured failure gates run without per-frame hand correction.",
+    "non_claim": "The interface and target choice are human decisions. The claim is automation after target choice, not a fully autonomous editor."
+  },
+  "release_artifacts": {
+    "demo_url": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v4.0.0/void-auto-edit-removal-only.mp4",
+    "release_page": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/tag/v4.0.0"
+  },
+  "non_claims": [
+    "Referent locking is post hoc in the demonstrated candidate C correction.",
+    "Mean IoU 0.467366 narrowly misses the proposed 0.470294 bar; that bar is not in force.",
+    "The Muse rescue applies only to frames 16-23.",
+    "Metrics quantify masks, removal stability, and recovery, not artistic quality or production readiness.",
+    "No claim is made that a professional artist could not perform equivalent manual rotoscoping."
+  ]
+}

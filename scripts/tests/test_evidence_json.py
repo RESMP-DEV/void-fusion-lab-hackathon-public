@@ -5,164 +5,55 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-EVIDENCE = ROOT / "evidence/true3d-tire-campaign-2026-11-03.json"
+EVIDENCE = ROOT / "evidence/auto-edit-submission-2026-11-04.json"
 
 
 def load_evidence() -> dict:
     return json.loads(EVIDENCE.read_text(encoding="utf-8"))
 
 
-def test_true3d_campaign_evidence_schema_is_complete() -> None:
+def test_auto_edit_evidence_binds_the_submission_demo() -> None:
     payload = load_evidence()
+    demo = payload["final_demo"]
 
-    assert set(payload) == {
-        "final_artifacts",
-        "measurements",
-        "non_claims",
-        "premise",
-        "recorded_at",
-        "results",
-        "runtime",
-        "schema",
-        "scope",
-        "summary",
-        "target_description",
-        "validation",
-        "verification_provenance",
-    }
-    assert set(payload["summary"]) == {
-        "all_brand_gates_passed",
-        "all_cleanup_rings_changed",
-        "all_object_regions_unchanged",
-        "brand_visible_frames",
-        "minimum_brand_pixels_required",
-        "pass2_frames_preserved",
-        "pass2_shots",
-        "pre_pass2_frames",
-        "pre_pass2_shots",
-    }
-    assert set(payload["measurements"]) == {
-        "background_changed_ratio",
-        "cleanup_ring_changed_ratio",
-        "min_brand_pixels",
-        "object_changed_ratio",
-    }
-    assert set(payload["runtime"]) == {"blender", "preservation", "void"}
-    assert set(payload["validation"]) == {
-        "all_passed",
-        "cleanup_mask",
-        "glb",
-        "inserted_mask",
-    }
-    assert set(payload["verification_provenance"]) == {
-        "campaign_runtime_dirty",
-        "campaign_runtime_source",
-        "note",
-    }
-    assert set(payload["final_artifacts"]) == {
-        "ad_result_reel",
-        "assembly_report_sha256",
-        "comparison_master",
-        "long_form_demo",
-        "proof_sheet",
-    }
-
-    required_result_fields = {
-        "background_changed_ratio",
-        "blend_sha256",
-        "brand_gate_passed",
-        "cleanup_mask_binary",
-        "cleanup_mask_sha256",
-        "cleanup_ring_changed_ratio",
-        "composite_sha256",
-        "frames",
-        "glb_sha256",
-        "glb_valid",
-        "id",
-        "inserted_mask_binary",
-        "inserted_mask_sha256",
-        "material_count",
-        "mesh_objects",
-        "mesh_vertices",
-        "min_brand_pixels",
-        "native_raw_sha256",
-        "object_changed_ratio",
-        "poses_sha256",
-        "preserved_sha256",
-        "render_manifest_sha256",
-        "retimed_sha256",
-        "temporal_pop_score",
-    }
-    for result in payload["results"]:
-        assert set(result) == required_result_fields
+    assert payload["project_name"] == "VOID Auto-Edit"
+    assert demo["duration_seconds"] == 178.0
+    assert demo["frames"] == 4267
+    assert demo["width"] == 1920
+    assert demo["height"] == 1080
+    assert demo["sha256"] == ("77ef47319734f639b86ffff186d1780a6d381b3659b2445d02082611fa8d7fc0")
+    assert payload["release_artifacts"]["demo_url"].endswith(
+        "/v4.0.0/void-auto-edit-removal-only.mp4"
+    )
 
 
-def test_true3d_campaign_evidence_binds_the_public_result() -> None:
+def test_auto_edit_evidence_preserves_claims_and_limits() -> None:
     payload = load_evidence()
-    results = payload["results"]
+    candidate_c = payload["headline_results"]["candidate_C"]
+    candidate_f = payload["headline_results"]["candidate_F"]
+    candidate_d = payload["headline_results"]["candidate_D"]
 
-    assert payload["schema"] == "void-fusion-lab.true3d-tire-campaign.v2"
-    assert len(results) == 17
-    assert len({result["id"] for result in results}) == 17
-    assert sum(result["frames"] for result in results) == 465
-    assert payload["summary"]["pre_pass2_shots"] == len(results)
-    assert payload["summary"]["pre_pass2_frames"] == sum(result["frames"] for result in results)
-    assert payload["summary"]["pass2_shots"] == sum(
-        result["brand_gate_passed"] for result in results
-    )
-    assert payload["summary"]["pass2_frames_preserved"] == sum(
-        result["frames"] for result in results if result["brand_gate_passed"]
-    )
-    assert payload["summary"]["all_brand_gates_passed"] is True
-    assert payload["summary"]["all_object_regions_unchanged"] is True
-    assert payload["summary"]["all_cleanup_rings_changed"] is True
-    assert all(result["glb_valid"] for result in results)
-    assert all(result["inserted_mask_binary"] for result in results)
-    assert all(result["cleanup_mask_binary"] for result in results)
+    assert candidate_c["target_point_referent_lock_judged_bystander_spill"] == 0
+    assert candidate_c["subject_retention"] == 0.99995
+    assert candidate_c["void_ghost_frame_0"] < candidate_c["ghost_threshold"]
+    assert candidate_f["recovery_fraction"] == 0.964483
+    assert candidate_d["frames"] == 90
+    assert any("post hoc" in claim for claim in payload["non_claims"])
+    assert any("frames 16-23" in claim for claim in payload["non_claims"])
 
 
-def test_true3d_campaign_evidence_binds_release_artifacts() -> None:
-    artifacts = load_evidence()["final_artifacts"]
-    long_form = artifacts["long_form_demo"]
-
-    assert long_form["sha256"] == (
-        "be8c783362b39e89105a934dfcc97fae4a2c66beac97aa3a975e8590093f0e26"
-    )
-    assert long_form["frames"] == 2613
-    assert long_form["duration_seconds"] == 108.875
-
+def test_readme_and_presentation_bind_the_live_demo() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     presentation = (ROOT / "docs/presentation.md").read_text(encoding="utf-8")
     demo_url = (
         "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/"
-        "download/v3.0.0/void-fusion-true3d-final.mp4"
+        "download/v4.0.0/void-auto-edit-removal-only.mp4"
     )
-    comparison_url = (
-        "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/"
-        "download/v3.0.0/void-fusion-true3d-five-stage-comparison.mp4"
-    )
+
     assert demo_url in readme
-    assert comparison_url in readme
-    assert (
-        "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/"
-        "download/v3.0.0/void-fusion-true3d-five-stage-proof.jpg" in readme
-    )
-    assert "108.875 seconds" in presentation
-    assert artifacts["comparison_master"]["sha256"] == (
-        "57531ddea479fc5dfe6ecfc4e02f3e150420f1ff4ced8775fa053ce54f6c2bfe"
-    )
-    assert artifacts["proof_sheet"]["sha256"] == (
-        "3a11ec460ea9c393cbfca7ddd5981c7e83159515b72a38f50ba8feec6336142f"
-    )
-
-
-def test_true3d_campaign_evidence_preserves_limitations() -> None:
-    claims = load_evidence()["non_claims"]
-
-    assert any("not a scan" in claim for claim in claims)
-    assert any("not recovered 3D ground truth" in claim for claim in claims)
-    assert any("not OCR" in claim for claim in claims)
-    assert any("not artistic quality" in claim for claim in claims)
+    assert "178.000 seconds" in presentation
+    assert "68,355-70,233" in readme
+    assert "96.4483%" in readme
 
 
 def test_every_tracked_evidence_json_parses_without_private_paths() -> None:
@@ -180,11 +71,14 @@ def test_every_tracked_evidence_json_parses_without_private_paths() -> None:
         raw = (ROOT / relative_path).read_text(encoding="utf-8")
         payload = json.loads(raw)
         assert isinstance(payload, dict), relative_path
-        assert "/Users/" not in raw, relative_path
-        assert "/home/" not in raw, relative_path
-        assert "/private/" not in raw, relative_path
-        assert "/Volumes/" not in raw, relative_path
-        assert "10.243." not in raw, relative_path
-        assert "b550-zt" not in raw, relative_path
-        assert "strix-zt" not in raw, relative_path
-        assert "source_revision" not in raw, relative_path
+        for forbidden in (
+            "/Users/",
+            "/home/",
+            "/private/",
+            "/Volumes/",
+            "10.243.",
+            "b550-zt",
+            "strix-zt",
+            "source_revision",
+        ):
+            assert forbidden not in raw, (relative_path, forbidden)
