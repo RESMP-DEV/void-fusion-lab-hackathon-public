@@ -74,8 +74,9 @@ The executable chain is:
 8. run VOID Pass 2 for all 17 runs;
 9. compare no-Pass2 and Pass2 by object, cleanup ring, background, and temporal
    measurements;
-10. reject missing stages, cadence mismatches, near-invisible insertions, and
-    refined frames without visible brand pixels before assembly.
+10. reject missing stages, cadence mismatches, and near-invisible pre-Pass2
+    insertions in the assembler, then apply a campaign-level brand audit to the
+    refined frames before final selection.
 
 All 17 Pass 1 runs and all 17 Pass 2 runs completed. The final 16-shot assembly
 has 457 aligned frames.
