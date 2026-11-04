@@ -9,8 +9,8 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from assemble_advertising_reel import STAGES, band_height, measure_insertion
-from PIL import Image
+from assemble_advertising_reel import STAGES, band_height, measure_insertion, text_height
+from PIL import Image, ImageFont
 
 from samurai.media import extract_color_frames
 
@@ -554,6 +554,13 @@ def test_insertion_change_threshold_uses_the_documented_channel_mean(tmp_path) -
 
     assert metrics["mean_absolute_difference"] == pytest.approx(10.0)
     assert metrics["mean_changed_ratio"] == 0.0
+
+
+def test_text_height_survives_an_unrenderable_glyph(monkeypatch) -> None:
+    font = ImageFont.load_default()
+    monkeypatch.setattr(font, "getbbox", lambda _text: None)
+
+    assert text_height("LABEL", font) == 1
 
 
 def test_cli_fails_closed_on_an_unsupported_manifest_schema(tmp_path) -> None:

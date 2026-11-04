@@ -287,6 +287,10 @@ def measure_insertion(
         changed = difference.mean(axis=2) > changed_threshold
         changed_pixels = int(changed.sum())
         pixels = int(changed.size)
+        if pixels == 0:
+            raise AdvertisingReelError(
+                f"insertion stage frame {plate_path.name} decoded zero pixels"
+            )
         total_changed += changed_pixels
         total_pixels += pixels
         absolute_sum += float(difference.mean())
@@ -343,6 +347,8 @@ def band_height(height: int, *, divisor: int, minimum: int) -> int:
 def text_height(text: str, font: ImageFont.BaseImageFont) -> int:
     """Return the rendered height of one text line."""
     box = font.getbbox(text)
+    if box is None:
+        return 1
     return int(box[3] - box[1])
 
 

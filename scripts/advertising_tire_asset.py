@@ -498,6 +498,8 @@ def _render_glyph(
     """Return one glyph bitmap and its advance width in pixels."""
     advance = _font_advance(font, character)
     bbox = font.getbbox(character)
+    if bbox is None:
+        return np.zeros((1, 1), dtype=np.uint8), 0.0
     width = max(1, int(bbox[2] - bbox[0]) + 4)
     height = max(1, int(bbox[3] - bbox[1]) + 4)
     image = Image.new("L", (width, height), 0)
@@ -514,6 +516,8 @@ def _font_advance(
         return float(font.getlength(character))
     except AttributeError:
         bbox = font.getbbox(character)
+        if bbox is None:
+            return 0.0
         return float(bbox[2] - bbox[0] + 4)
 
 
