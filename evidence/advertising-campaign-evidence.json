@@ -1,11 +1,32 @@
 {
   "schema": "void-fusion-lab.advertising-campaign.v2",
   "recorded_at": "2026-11-04T01:50:00Z",
+  "source_revision": "825937d505abab3fc8069171676cdb1cda0ab742",
+  "source_dirty": false,
+  "execution_binding": "The executed renderer and assembler bytes matched the PR #43 merge after review repairs; campaign media remained outside the repository.",
   "operator": "Void Fusion team agents with representative acceptance",
   "premise": "Replace a visible tire in finished advertising footage while preserving the surrounding action, then refine only a bounded cleanup ring.",
   "selection": {
     "source_material": "transformed fair-use advertising research footage; source media is not committed",
+    "source_videos": 6,
+    "source_sha256": {
+      "6Dgs99ql-Ng.mp4": "f1844351743c7154fcf11954e9a8372db523b71a0443e718e071dbad0e7fadd9",
+      "CwnT3Iy1pyk.mp4": "cfa8ab321f25fcac070ad0f675108af7f9367d5c5b518cfa15364761871e5530",
+      "SpIto_LEduk.mp4": "114954b556b92a8a5b81beb49f94485256d9298665ae5b0ae0bcf0d165d9e0fa",
+      "VAmbJvAP988.mp4": "b9031e6c652bd805ee9b4b8370aa4bb0c77800e7b13b14e87ac7d1fab1e75d16",
+      "gWPF3VNY9tY.mp4": "adf6dba0484b4ef9a08a746432ffd9507aade1b337743508b67e5c0c283d35f4",
+      "jct1XSUjwAM.mp4": "e00e5d1cc71810042aefc1e4e0f78b19b5b4743b38d06e58858a960463ee68b1"
+    },
     "semantic_gate": "continuous non-empty tire-mask run plus independent tire/wheel classification",
+    "semantic_panel": {
+      "transport": "alt-vision CLI",
+      "model": "Grok 4.7 vision",
+      "successful_requests": 9,
+      "known_successful_cost_usd": 0.718088,
+      "classification_contract": "TIRE/WHEEL, ROAD/BACKGROUND, PRODUCT_OTHER, or AMBIGUOUS",
+      "accepted_class": "TIRE/WHEEL",
+      "non_claim": "one failed max-turn request returned no usage and is not included in known cost"
+    },
     "recovered_runs": 17,
     "recovered_frames": 465,
     "pass1_sequences_packaged": 17,
@@ -26,6 +47,8 @@
     "sam": {
       "model": "Meta SAM 3.1",
       "runtime": "MuggledSAM community runtime",
+    "runtime_revision": "a004ffc72bde75a8a4d64573e2add06e934f40a4",
+    "checkpoint_sha256": "0567debeec80ba4ac6369540c6c248025283cb3ff2b92827509e57e2b3541cb6",
       "precision": "bf16",
       "prompt": "tire",
       "non_claim": "community runtime output, not official-predictor ground truth"
@@ -48,6 +71,17 @@
     }
   },
   "measurements": {
+    "retained_pass2_temporal_pop_score": {
+      "minimum": 1.0,
+      "mean": 1.0,
+      "maximum": 1.0
+    },
+    "retained_pass2_lead_in_violation": {
+      "all_shots": true,
+      "minimum_changed_pixels": 4107,
+      "mean_changed_pixels": 9553.9375,
+      "maximum_changed_pixels": 17187
+    },
     "retained_pass2_brand_pixels": {
       "minimum": 466,
       "mean": 9378.13249469809,
@@ -71,6 +105,17 @@
   },
   "public_artifacts": {
     "release_tag": "v2.0.0",
+    "ad_result_reel": {
+      "frames": 457,
+      "geometry": "672x384",
+      "fps": 24,
+      "sha256": "8153b5ce145b4e6260c3683458368ff472d30efec59cf977aec8011e40b7267e"
+    },
+    "assembly_report": {
+      "sha256": "08ba0532cee923a62367a393bf10bab60222ad3a507d4456b5df2eefdf4ae50d",
+      "shots": 16,
+      "frames": 457
+    },
     "long_form": {
       "url": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v2.0.0/void-fusion-advertising-2026-11-03.mp4",
       "bytes": 62363142,
@@ -100,10 +145,19 @@
     "scaffold_gate": "just check: aggregate PASS",
     "quality_gate": "just quality: ruff, format, shellcheck, ty, pytest aggregate PASS",
     "pull_request": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon/pull/43",
-    "merge_commit": "825937d505abab3fc8069171676cdb1cda0ab742"
+    "merge_commit": "825937d505abab3fc8069171676cdb1cda0ab742",
+    "final_brand_audit": {
+      "algorithm": "decode each retained Pass 2 frame and ROI-black inserted mask; count pixels with R>=120, G>=90, and R-B>=45 inside the mask; reject a run if any frame has fewer than one brand pixel",
+      "threshold": 1,
+      "retained_runs": 16,
+      "retained_frames": 457,
+      "retained_frames_passing": 457,
+      "exit": 0
+    }
   },
   "non_claims": [
     "The replacement tire is deterministic and 2.5D-looking, not learned image-to-3D reconstruction or physical simulation.",
+    "The renderer draws the requested MICHELIN-style wordmark itself and copies no third-party image asset; this does not establish trademark rights or legal clearance.",
     "Comparator metrics quantify pixel change; they do not prove artistic quality or photorealism.",
     "Pass 2 changes the replacement materially in some retained shots and those ranges are reported.",
     "The MuggledSAM runtime is not the pinned official SAM 3.1 predictor and its masks are not ground truth.",
