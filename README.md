@@ -1,73 +1,63 @@
-# Void Fusion: visible tire replacement for finished advertising footage
+# Void Fusion: true 3D tire replacement for finished advertising footage
 
-Void Fusion lets an advertising team replace one tire in already-shot footage:
-Meta SAM 3.1 tracks the existing wheel frame by frame, VOID Pass 1 removes it and
-rebuilds the wheel well, a visible Michelin-style replacement follows the same
-motion, and insertion-aware VOID Pass 2 refines only the cleanup seam.
+Void Fusion turns a plain-language advertising request into a measurable video
+replacement: Meta SAM 3.1 finds and tracks the real tire, VOID Pass 1 removes it,
+a fitted Blender-native 3D wheel is posed into the clean shot, and
+insertion-aware VOID Pass 2 refines only the surrounding cleanup ring.
 
-## Watch the v2 demo
+## Watch the v3 demo
 
-- [107.21-second long-form demo](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v2.0.0/void-fusion-advertising-2026-11-03.mp4)
-- [Five-stage comparison master](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v2.0.0/void-fusion-five-stage-comparison-2026-11-03.mp4)
-- [Four-stage campaign contact sheet](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v2.0.0/void-fusion-campaign-four-stage-proof-2026-11-03.jpg)
+- [108.875-second true-3D demo](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v3.0.0/void-fusion-true3d-final.mp4)
+- [Five-stage comparison master](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v3.0.0/void-fusion-true3d-five-stage-comparison.mp4)
+- [Five-stage proof sheet](https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v3.0.0/void-fusion-true3d-five-stage-proof.jpg)
 
-The long-form demo deliberately shows five uninterrupted blocks: original
-commercial footage, explicit red tire selection, clean plate, visible branded
-replacement, and refined result. It is not a subtle invisible edit.
+The demo shows five uninterrupted 465-frame blocks: original commercial action,
+SAM selection, VOID Pass 1 clean plate, Blender-native 3D insertion, and
+preserved VOID Pass 2. Explanatory cards label every stage.
 
 ## Result
 
 | Measure | Result |
 | --- | ---: |
-| Continuous tire masks recovered | 17 runs / 465 frames |
+| Continuous tire runs recovered | 17 runs / 465 frames |
 | VOID Pass 1 successes | 17 / 17 |
-| VOID Pass 2 successes | 17 / 17 |
-| Retained after final visibility gate | 16 shots / 457 frames |
-| Underlying selected action | 19.042 seconds at 24 fps |
-| Long-form presentation | 2,573 frames / 107.208 seconds / 1920x1080 |
+| Insertion-aware VOID Pass 2 successes | 17 / 17 |
+| Preserved frames passing brand gate | 465 / 465 |
+| Campaign minimum brand-band pixels | 37 per frame |
+| Inserted-object changed ratio after preservation | 0.0 |
+| Cleanup-ring changed ratio | mean 27.65% / max 52.48% |
+| Final presentation | 2,613 frames / 108.875 seconds / 1920x1080 |
 
-One eight-frame Pass 2 run was excluded because one frame had zero detectable
-brand pixels. Every frame in the retained campaign passed the brand-visibility
-check. The minimum retained brand-pixel count is 466; the mean is approximately
-9,378 pixels per frame.
+The replacement is a real Blender mesh: 38 objects, 2,700 vertices, seven
+materials, with persisted `.blend` and valid `.glb` exports. Every inserted and
+cleanup mask decodes as nonempty binary ROI-black `{0,255}` across all 465
+frames.
 
-The retained Pass 2 runs have:
+## Why the replacement remains visible
 
-- object-preservation changed ratio: minimum 5.61%, mean 16.25%, maximum 44.21%;
-- cleanup-ring changed ratio: minimum 9.51%, mean 23.46%, maximum 40.19%;
-- background changed ratio: minimum 0.80%, mean 3.81%, maximum 14.45%.
+Diffusion does not always obey a keep mask reliably enough for advertising.
+Qualification showed seeds and stronger prompts could reduce early brand-band
+pixels to almost zero. Void Fusion therefore enforces the quadmask contract
+after VOID Pass 2: the exact Blender object is retained inside its KEEP region,
+while the model-refined cleanup ring and background remain from Pass 2.
 
-These are change measurements, not claims of photorealism or artistic quality.
+The comparator then verifies the intended separation: object changed ratio is
+zero, every cleanup ring changed, and background change is measured separately.
+Yellow brand-band pixels are a visibility gate, not OCR or an artistic-quality
+claim.
 
-## Why this is not one whole-scene video generator
+## Model and runtime roles
 
-The real advertising footage remains the baseline. SAM 3.1 identifies where the
-selected tire appears in every retained frame. VOID Pass 1 changes the selected
-tire region into a clean plate. The replacement renderer fits the tire trajectory
-and remains visible. The insertion-aware quadmask marks that replacement as keep
-and exposes only a bounded cleanup ring to VOID Pass 2. Comparator reports then
-separate object preservation, cleanup-ring change, background change, and
-temporal warnings.
-
-This keeps the useful parts of the original shoot: camera motion, road, vehicle,
-performance, lighting, and editing. It changes the advertising object rather than
-asking a generator to reinvent the entire commercial.
-
-## Model roles
-
-- **Meta SAM 3.1** provides dense frame-aligned tire masks and the visible red
-  selection overlay.
-- **Netflix VOID Pass 1** removes the tracked tire and reconstructs the road and
-  wheel well.
-- **The deterministic replacement lane** fits a visible Michelin-style tire to
-  the tracked ellipse trajectory. It is not claimed to be learned image-to-3D
-  reconstruction or physics simulation.
-- **Netflix VOID Pass 2** sees an insertion-aware quadmask: replacement keep,
-  untouched background keep, and cleanup ring affected.
-- **Comparator and assembler** align every stage and reject missing media,
-  cadence mismatches, and a pre-Pass2 insertion that is nearly identical to its
-  clean plate. A separate campaign-level brand audit then rejects a refined run
-  when any frame loses detectable brand pixels.
+- **Meta SAM 3.1** provides the frame-aligned tire perception used to recover
+  and track one conceptual object.
+- **Netflix VOID Pass 1** removes the tracked tire and reconstructs the wheel
+  well and road.
+- **Blender 5.2.2 Cycles** renders the requested tire as true 3D geometry with
+  per-frame position, scale, tilt, and rolling spin.
+- **Netflix VOID Pass 2** refines only the cleanup ring through an
+  insertion-aware quadmask.
+- **Comparator and assembler gates** reject missing stages, cadence mismatch,
+  no-op insertion, mask-value violations, and frames below the brand threshold.
 
 ## Reproduce the software gates
 
@@ -75,22 +65,22 @@ asking a generator to reinvent the entire commercial.
 uv sync
 just check
 just quality
-uv run pytest scripts/tests/test_advertising_tire_asset.py \
+uv run pytest scripts/tests/test_advertising_tire_3d.py \
+  scripts/tests/test_blender_tire_render.py \
+  scripts/tests/test_preserve_pass2_insertion.py \
   scripts/tests/test_assemble_advertising_reel.py -q
 ```
 
-The heavy SAM 3.1 and VOID lanes require their documented CUDA environments and
-checkpoints; the repository tests intentionally do not download checkpoints or
-call external APIs.
+The SAM 3.1 and VOID lanes require their documented CUDA environments and
+checkpoints. Repository tests do not download checkpoints, commit source media,
+or call external APIs.
 
 ## Evidence and limitations
 
-- Sanitized campaign evidence: [`evidence/advertising-campaign-evidence.json`](evidence/advertising-campaign-evidence.json)
+- Sanitized true-3D campaign evidence: [`evidence/true3d-tire-campaign-2026-11-03.json`](evidence/true3d-tire-campaign-2026-11-03.json)
 - Judge-facing presentation guide: [`docs/presentation.md`](docs/presentation.md)
 
-Known limitations are explicit: the replacement renderer is deterministic and
-2.5D-looking rather than a learned 3D reconstruction; Pass 2 changes the
-replacement more than a production compositor would want in some shots; temporal
-pop warnings remain; and the source is transformed fair-use advertising footage
-for this research demonstration. No source video or model checkpoint is committed
-to the repository.
+The procedural wheel is not a scan of the filmed tire. Its pose is
+ellipse-derived rather than recovered 3D ground truth. Pixel measurements do
+not prove photorealism or artistic quality. Source media, model checkpoints,
+and generated videos are intentionally absent from this repository.

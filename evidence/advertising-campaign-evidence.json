@@ -1,9 +1,7 @@
 {
   "schema": "void-fusion-lab.advertising-campaign.v2",
   "recorded_at": "2026-11-04T01:50:00Z",
-  "source_revision": "825937d505abab3fc8069171676cdb1cda0ab742",
-  "source_dirty": false,
-  "execution_binding": "The executed renderer and assembler bytes matched the PR #43 merge after review repairs; campaign media remained outside the repository.",
+  "execution_binding": "The executed renderer and assembler bytes matched the reviewed private source; private commit and PR identifiers are redacted in this public export.",
   "operator": "Void Fusion team agents with representative acceptance",
   "premise": "Replace a visible tire in finished advertising footage while preserving the surrounding action, then refine only a bounded cleanup ring.",
   "selection": {
@@ -144,8 +142,6 @@
     "focused_tests": "uv run pytest scripts/tests/test_advertising_tire_asset.py scripts/tests/test_assemble_advertising_reel.py -q: 35 passed",
     "scaffold_gate": "just check: aggregate PASS",
     "quality_gate": "just quality: ruff, format, shellcheck, ty, pytest aggregate PASS",
-    "pull_request": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon/pull/43",
-    "merge_commit": "825937d505abab3fc8069171676cdb1cda0ab742",
     "final_brand_audit": {
       "algorithm": "decode each retained Pass 2 frame and ROI-black inserted mask; count pixels with R>=120, G>=90, and R-B>=45 inside the mask; reject a run if any frame has fewer than one brand pixel",
       "threshold": 1,
@@ -153,7 +149,8 @@
       "retained_frames": 457,
       "retained_frames_passing": 457,
       "exit": 0
-    }
+    },
+    "source_provenance": "Private repository and merge identifiers are redacted; hashes and local check outcomes remain."
   },
   "non_claims": [
     "The replacement tire is deterministic and 2.5D-looking, not learned image-to-3D reconstruction or physical simulation.",
