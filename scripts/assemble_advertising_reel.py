@@ -648,6 +648,13 @@ def main(argv: list[str] | None = None) -> int:
                 stage: extract_stage_frames(stage, shot.stages[stage], shot_root / stage)
                 for stage in STAGES
             }
+            for stage in STAGES:
+                expected_frames = probes[shot.shot_id][stage].frames
+                if len(shot_frames[stage]) != expected_frames:
+                    raise AdvertisingReelError(
+                        f"shot {shot.shot_id} stage {stage} decoded "
+                        f"{len(shot_frames[stage])} frames, expected {expected_frames}"
+                    )
             frames_by_shot[shot.shot_id] = shot_frames
             metrics = measure_insertion(
                 shot_frames["pass1_clean_plate"],
