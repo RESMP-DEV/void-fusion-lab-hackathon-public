@@ -68,3 +68,4 @@ def test_every_tracked_evidence_json_parses_without_private_paths() -> None:
         payload = json.loads(raw)
         assert isinstance(payload, dict), relative_path
         assert "/Users/" not in raw, relative_path
+        assert "/home/" not in raw, relative_path
