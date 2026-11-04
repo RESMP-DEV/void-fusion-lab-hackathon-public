@@ -47,8 +47,8 @@
     "sam": {
       "model": "Meta SAM 3.1",
       "runtime": "MuggledSAM community runtime",
-    "runtime_revision": "a004ffc72bde75a8a4d64573e2add06e934f40a4",
-    "checkpoint_sha256": "0567debeec80ba4ac6369540c6c248025283cb3ff2b92827509e57e2b3541cb6",
+      "runtime_revision": "a004ffc72bde75a8a4d64573e2add06e934f40a4",
+      "checkpoint_sha256": "0567debeec80ba4ac6369540c6c248025283cb3ff2b92827509e57e2b3541cb6",
       "precision": "bf16",
       "prompt": "tire",
       "non_claim": "community runtime output, not official-predictor ground truth"
