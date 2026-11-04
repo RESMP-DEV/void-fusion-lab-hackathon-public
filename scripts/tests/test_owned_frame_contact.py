@@ -337,7 +337,9 @@ def test_a_short_candidate_mask_sequence_fails_closed(tmp_path: Path) -> None:
 
 def test_the_public_evidence_records_the_owned_frame_contact_boundary() -> None:
     payload = json.loads(
-        (REPOSITORY_ROOT / "evidence" / "submission-evidence.json").read_text(encoding="utf-8")
+        (REPOSITORY_ROOT / "evidence" / "historical-full-chain-evidence.json").read_text(
+            encoding="utf-8"
+        )
     )
     contact = payload["real_full_chain"]["owned_frame_contact"]
 

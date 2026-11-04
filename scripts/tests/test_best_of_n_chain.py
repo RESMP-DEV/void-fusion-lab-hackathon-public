@@ -35,7 +35,7 @@ FRAMES = 6
 FPS = 12.0
 TARGET = (slice(2, 5), slice(2, 5))
 STALE_TARGET = (slice(5, 8), slice(5, 8))
-EVIDENCE_PATH = Path(__file__).resolve().parents[2] / "evidence/submission-evidence.json"
+EVIDENCE_PATH = Path(__file__).resolve().parents[2] / "evidence/historical-full-chain-evidence.json"
 
 
 def _flatten_sum(node: ast.expr) -> list[ast.expr]:
