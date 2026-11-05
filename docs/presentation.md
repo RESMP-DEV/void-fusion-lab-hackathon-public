@@ -1,69 +1,44 @@
-# VOID Auto-Edit judge guide
+# VOID Auto-Edit presentation script
 
-## One sentence
+## Presentation rule
 
-**VOID Auto-Edit selects one object, removes it with VOID, and automatically
-audits every frame for the wrong target, missing subject, cadence break, or
-ghosted removal.**
+Show the footage. Speak plainly. Add no captions, cards, grids, or on-screen instructions.
 
-For a layperson: **instead of a person watching every frame and fixing masks by
-hand, the computer checks the edit and rejects the bad ones.**
+## One-line product
 
-## Demo map
+Click the object once. VOID Auto-Edit removes it and runs automatic checks across the processed shot.
 
-The submitted demo is 178.000 seconds, 1920×1080, 24 fps, and narrated.
+## Narration for the caption-free reel
 
-| Time | Section | Claim |
-| --- | --- | --- |
-| 0:00-0:08 | Hook | Remove the object while preserving the scene. |
-| 0:08-0:38 | Referent failure and correction | Text-only SAM unions two people; a single target point locks one referent. |
-| 0:38-0:41 | Target-lock card | Identity must pass before GPU work. |
-| 0:41-1:02 | Review interface | A creator triages model disagreement and locks one referent. |
-| 1:02-1:38 | Muse rescue | A missing head-and-arm region returns when the live Muse vote is restored. |
-| 1:38-2:23 | 90-frame VOID endurance | The quadmask contract sustains temporal removal. |
-| 2:23-2:53 | Measurements and limits | Zero judged-frame spill, 99.995% retention, bounded Muse scope. |
+### 1. Raw footage
 
-## Rubric alignment
+> Two people are in this shot. Only one of them should disappear.
 
-### Impact, 30%
+### 2. The old problem
 
-Manual object removal is slow because a human must inspect footage, detect an
-ambiguous referent, correct masks, rerun inpainting, and eyeball the result.
-VOID Auto-Edit makes those checks automatic after one target choice. The same
-audit can run across a full shot instead of relying on a person watching every
-frame.
+> A plain text prompt removes both people. Someone normally has to watch the footage frame by frame to catch that.
 
-### Meta AI tooling, 25%
+### 3. The product decision
 
-SAM 3.1 provides frame-aligned object perception. The critical improvement is
-not asking text alone to decide identity: a single target point selects the
-referent, and SAM object identity propagates through the shot. Meta Muse then
-participates in ensemble perception. The demo measures what happens when Muse
-is removed and restored.
+> With VOID Auto-Edit, you click the one object you want removed.
 
-### Technical depth, execution, 20%
+### 4. How it works
 
-The runtime preserves the four VOID classes, uses lossless mask media, aligns
-cadence, executes VOID, and computes:
+> SAM follows that object. Muse adds a second view of it. VOID fills in the background.
 
-- bystander spill;
-- subject retention;
-- mean IoU;
-- VOID ghost scores;
-- frame count and temporal coverage;
-- Muse dropout and recovery.
+### 5. Automatic review
 
-### Demo, 25%
+> While the shot plays, the system checks for the wrong object, a lost target, or an unstable removal.
 
-The video opens with the failure mode, shows the corrected target, exposes the
-review workflow, demonstrates Muse ablation, and closes with a sustained VOID
-run. Narration states both the measured wins and boundaries.
+Let this section play silently for at least eight seconds.
 
-## Honest limits
+### 6. Result
 
-- Candidate C's correction is post hoc.
-- Mean IoU is 0.467366 against a proposed, not-in-force 0.470294 bar.
-- The Muse rescue covers frames 16-23 only.
-- Metrics do not prove artistic quality or production readiness.
-- A skilled artist could reproduce a similar visual result manually; the claim
-  is automated audit and execution, not visual impossibility.
+> One click. The right removal. The whole shot checked automatically.
+
+## Rubric story
+
+- **Impact:** Video teams review flagged moments instead of scrubbing through footage.
+- **Meta AI:** SAM 3.1 follows the selected object, Muse adds a second perception view, and VOID rebuilds the scene.
+- **Execution:** The repo contains the working pipeline, local checks, and reproducible artifacts.
+- **Demo:** The audience sees the wrong removal, the one-click correction, the moving result, and the final shot without reading anything.

@@ -43,6 +43,7 @@ def test_auto_edit_evidence_preserves_claims_and_limits() -> None:
 
 
 def test_readme_and_presentation_bind_the_live_demo() -> None:
+    """Keep public copy product-first and free of internal study vocabulary."""
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     presentation = (ROOT / "docs/presentation.md").read_text(encoding="utf-8")
     demo_url = (
@@ -51,9 +52,27 @@ def test_readme_and_presentation_bind_the_live_demo() -> None:
     )
 
     assert demo_url in readme
-    assert "178.000 seconds" in presentation
-    assert "68,355-70,233" in readme
-    assert "96.4483%" in readme
+    assert "Click one object" in readme
+    assert "Add no captions, cards, grids" in presentation
+
+    for banned_term in (
+        "claim",
+        "study",
+        "referent",
+        "quadmask",
+        "IoU",
+        "post hoc",
+        "threshold",
+        "candidate",
+        "bystander",
+        "spill",
+        "ablation",
+        "limitation",
+        "artist",
+        "rotoscoping",
+    ):
+        assert banned_term not in readme.lower()
+        assert banned_term not in presentation.lower()
 
 
 def test_every_tracked_evidence_json_parses_without_private_paths() -> None:
