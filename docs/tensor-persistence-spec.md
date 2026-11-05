@@ -1,17 +1,9 @@
 # Expert Tensor Persistence Specification
 
-> **Public-export note (2026-11-03):** every machine path in this document
-> is a placeholder (`<research-root>/...`); the unredacted original is not
-> distributed with this repository. The file-name and schema
-> boundary between the layers that exist in this repository is recorded
-> in section 8. **Conflict C-1 is UNRESOLVED
-> and is flagged here, not decided:** section 2 of this spec mandates the
-> layout `experts/<expert_id>/<expert_id>__<model_slug>__prob.npy` with a
-> manifest `experts` LIST, while the staged module `src/samurai/persist.py`
-> implements a flat `<chunk_dir>/<expert_id>.npy` layout with a manifest
-> `experts` DICT (its docstring calls that layout the default used where
-> this spec is absent). Neither text silently overrules the other; one
-> Phase-2 decision must align them.
+Machine paths in this document are repository-neutral placeholders. Section 8
+records the file-name and schema boundary between the specified layout and the
+staged `src/samurai/persist.py` implementation. Conflict C-1 remains an open
+maintainer decision.
 
 - Spec version: `1.0.0` (see §7, field `spec_version`)
 - Status: SPEC ONLY. No code, no production change, no run authorised by this document.
@@ -328,7 +320,7 @@ directory belongs to exactly one of them.
    cooperating writer cannot replace an artifact in the verification-to-load
    gap. Once mapped, atomic replacement publishes a different inode and cannot
    alter bytes already mapped by the run.
-6. Conflict C-1 (the public-export note at the top of this document)
+6. Conflict C-1 (the publication note at the top of this document)
    is unchanged: aligning the legacy store with sections 2 and 3
    remains an open maintainer decision. This section records the
    file-name and schema boundary that decision must respect.

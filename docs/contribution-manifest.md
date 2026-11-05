@@ -1,38 +1,32 @@
-# Hackathon contribution manifest
+# Product implementation map
 
-This manifest separates the pre-hackathon baseline from event-built work. It is
-an eligibility aid, not a demo-quality claim.
+This map explains the public implementation surfaces behind VOID Auto-Edit. It
+does not attribute individual files to development periods.
 
-## Baseline
+## Product-critical surfaces
 
-The source tree begins from the team's recorded pre-kickoff research baseline.
-That baseline contained initial mask/fusion/calibration/SAM/VOID/CLI scaffolding
-and is not claimed as event-built work. The private baseline identity and
-pull-request discussion are intentionally withheld; the anonymized cumulative
-timeline below records only post-kickoff contributions.
+| Capability | Public implementation |
+| --- | --- |
+| Selected-object removal workflow | `src/samurai/sam31.py`, `src/samurai/ensemble.py`, `src/samurai/quadmask.py` |
+| Stable mask packaging and media handling | `scripts/package_quadmask.py`, `src/samurai/media.py`, `src/samurai/quadmask.py` |
+| Automatic review and comparison | `src/samurai/pass2_metrics.py`, `scripts/pass2_compare.py`, `src/samurai/remeasure.py` |
+| Candidate selection | `src/samurai/best_of_n.py`, `scripts/best_of_n.py` |
+| Perception persistence and calibration | `src/samurai/persist.py`, `src/samurai/expert_persist.py`, `src/samurai/calibration_run.py` |
+| Contact and body-boundary checks | `src/samurai/contact_grounding.py`, `src/samurai/owned_frame_contact.py`, `src/samurai/lower_body.py` |
+| Staged insertion experiments | `src/samurai/insertion.py`, `scripts/post_mask_iteration.py`, `scripts/preserve_pass2_insertion.py` |
+| Scene segmentation | `scripts/scene_boundaries.py` |
+| Prompt critique loop | `scripts/prompt_critique.py`, `scripts/critique_harness.py`, `scripts/critique/` |
+| Public demo and submission record | `README.md`, `docs/presentation.md`, `evidence/auto-edit-submission-2026-11-04.json` |
 
-## Event-built work
+## Supporting surfaces
 
-| Area | State | Public evidence boundary |
-| --- | --- | --- |
-| Official Meta rules, personal-key workflow, and bounded API lane | implemented and exercised | `evidence/historical-full-chain-evidence.json` |
-| Bounded Muse-to-critic prompt loop | implemented, exercised, and measured | `scripts/prompt_critique.py`; usage summary in historical full-chain evidence |
-| Fitted insertion iteration and per-candidate export | implemented and exercised | `scripts/post_mask_iteration.py`; output digests in historical full-chain evidence |
-| Strict Pass2 comparator | implemented and measured on real outputs | `scripts/pass2_compare.py`; metrics in campaign and historical evidence |
-| Diegetic clean-plate insertion and real VOID Pass2 | implemented and executed | `scripts/post_mask_iteration.py`; model/checkpoint identity and digests in historical evidence |
-| Lower-body ownership measurement | implemented and measured; 4/96 pass | `src/samurai/lower_body.py`; result summary in historical full-chain evidence |
-| Contact and shadow grounding | implemented and exercised | `src/samurai/contact_grounding.py`; sparse-owned-frame summary in historical evidence |
-| Pass2-aware Best-of-N full-chain ranking | implemented and exercised | `src/samurai/best_of_n.py`; four-candidate ranking in historical evidence |
-| Four real complete VOID chains and selected full-chain winner | executed and measured | `evidence/historical-full-chain-evidence.json` |
-| Continuous SAM tire recovery, visible replacement, and 17-run VOID campaign | executed, measured, and assembled | `evidence/advertising-campaign-evidence.json` |
-| Under-three-minute submission demo | produced | Release asset `void-fusion-advertising-2026-11-03.mp4` at tag `v2.0.0`; digest and metadata in campaign evidence |
-| Judge-facing plain-language presentation guide | produced | `docs/presentation.md` |
+The CLI, ensemble, SAM 3.1 adapter, media reader, quadmask packaging,
+calibration tests, model-boundary tests, and examples support the product path.
+The broad execution-and-test suite gives perception, mask, comparison,
+persistence, and candidate selection deterministic local contracts.
 
-The anonymized cumulative event timeline is
-[`../provenance/daily/2026-11-03.json`](../provenance/daily/2026-11-03.json).
+## Current submission
 
-## Non-claims
-
-A timeline or code path is not a quality verdict. Comparator values quantify
-change, and the current campaign limitations are recorded in
-`evidence/advertising-campaign-evidence.json`.
+The submitted product is VOID Auto-Edit: click one object, remove it with
+VOID, and run automatic checks across the processed shot. The release asset and
+digest are recorded in `evidence/auto-edit-submission-2026-11-04.json`.

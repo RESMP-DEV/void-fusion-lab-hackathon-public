@@ -1,7 +1,7 @@
 {
   "schema": "void-fusion-lab.advertising-campaign.v2",
   "recorded_at": "2026-11-04T01:50:00Z",
-  "execution_binding": "The executed renderer and assembler bytes matched the reviewed private source; private commit and PR identifiers are redacted in this public export.",
+  "execution_binding": "Public outputs and checkpoints are digest-bound. The executed renderer and assembler versions are not independently recoverable from this file.",
   "operator": "Void Fusion team agents with representative acceptance",
   "premise": "Replace a visible tire in finished advertising footage while preserving the surrounding action, then refine only a bounded cleanup ring.",
   "selection": {
@@ -150,7 +150,7 @@
       "retained_frames_passing": 457,
       "exit": 0
     },
-    "source_provenance": "Private repository and merge identifiers are redacted; hashes and local check outcomes remain."
+    "source_provenance": "Output digests and local check outcomes are public; renderer and assembler version provenance is not independently recoverable from this file."
   },
   "non_claims": [
     "The replacement tire is deterministic and 2.5D-looking, not learned image-to-3D reconstruction or physical simulation.",
