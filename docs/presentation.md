@@ -26,9 +26,9 @@ Click the object once. VOID Auto-Edit removes it and runs automatic checks acros
 
 > SAM follows that object. Muse adds a second view of it. VOID fills in the background.
 
-### 5. Automatic review
+### 5. Run safeguard
 
-> While the shot plays, the system checks for the wrong object, a lost target, or an unstable removal.
+> The run stays tied to the selected object and stops if it cannot find that object anywhere in the shot.
 
 Let this section play silently for at least eight seconds.
 

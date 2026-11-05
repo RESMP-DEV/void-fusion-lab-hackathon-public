@@ -36,7 +36,7 @@ ownership of the upstream SAMURAI project.
 The representative reviewed the transformed demonstration under a fair-use
 boundary for this hackathon. The public presentation derivative removes the
 source-stream watermark region and does not redistribute unmodified source
-footage, private datasets, model checkpoints, or private pipeline output media.
+footage, private datasets, model checkpoints, or pipeline output media.
 
 ## Methods
 

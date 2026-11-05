@@ -336,6 +336,7 @@ def test_a_short_candidate_mask_sequence_fails_closed(tmp_path: Path) -> None:
 
 
 def test_the_public_evidence_records_the_owned_frame_contact_boundary() -> None:
+    """Bind published contact coverage to its exact measured frame scope."""
     payload = json.loads(
         (REPOSITORY_ROOT / "evidence" / "historical-full-chain-evidence.json").read_text(
             encoding="utf-8"
@@ -352,7 +353,7 @@ def test_the_public_evidence_records_the_owned_frame_contact_boundary() -> None:
     # The measured report stays bound by digest without redistributing it.
     assert re.fullmatch(r"[0-9a-f]{64}", contact["report_sha256"])
 
-    # Coverage is reported for exactly the candidates the public export lists.
+    # Coverage is reported for exactly the candidates in the public record.
     candidates = payload["real_full_chain"]["candidates"]
     assert set(contact["candidate_mean_contact_coverage"]) == set(candidates)
     for coverage in contact["candidate_mean_contact_coverage"].values():

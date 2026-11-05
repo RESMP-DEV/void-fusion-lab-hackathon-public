@@ -1,7 +1,7 @@
 {
   "schema": "void-fusion-lab.submission-evidence.v1",
   "recorded_at": "2026-11-03T19:43:20.430120+00:00",
-  "public_export_note": "Sanitized public submission evidence. Private source media, machine paths, Git history, pull-request discussion, and checkpoints are absent; immutable outputs are bound by SHA-256.",
+  "publication_note": "Public submission evidence. Source media, machine paths, and checkpoints are absent; immutable outputs are bound by SHA-256.",
   "meta_model_usage": {
     "dense_perception": "Meta SAM 3.1",
     "reasoning_prototype": "Meta Muse Spark 1.3",
@@ -37,7 +37,7 @@
           "complemented": true
         }
       ],
-      "provenance": "pre_pass2_objective carries the retained private report's pre-Pass2 score for the same candidate. full_chain_objective is the value computed from that score and the published comparator metrics, so every candidate objective recomputes from this file."
+      "provenance": "pre_pass2_objective carries the retained pre-Pass2 score for the same candidate. full_chain_objective is computed from that score and the published comparator metrics."
     },
     "candidates": {
       "smooth-00": {
@@ -190,15 +190,14 @@
     "asset_fps": "24000/1001",
     "release_tag": "v1.0.0",
     "release_url": "https://github.com/RESMP-DEV/void-fusion-lab-hackathon-public/releases/download/v1.0.0/void-fusion-demo-2026-11-03-public.mp4",
-    "presentation_derivative": "The public presentation recording applies a static FFmpeg delogo operation to the upper-left source-watermark region; geometry, frame timing, audio, pipeline metrics, and private pipeline artifacts are unchanged."
+    "presentation_derivative": "The public presentation recording applies a static FFmpeg delogo operation to the upper-left source-watermark region; geometry, frame timing, audio, pipeline metrics, and underlying artifacts are unchanged."
   },
   "non_claims": [
     "Comparator metrics measure change, not artistic or physical quality improvement.",
     "All four real comparators report temporal pop 1.0 and lead-in violation; these are visible limitations.",
     "Lower-body ownership is 4/96 frames; no continuous ownership or full-body physics is claimed.",
     "The fitted asset is a model-free pneumatic proxy, not learned image-to-3D generation.",
-    "Private source media and private pipeline outputs are not redistributed; only output digests are public.",
-    "The released demo is a generated presentation recording of the pipeline, not a redistribution of the private pipeline outputs (candidate derivatives, clean plate, comparator reports, execution log); those stay bound by SHA-256 only.",
-    "The public repository is a fresh single-commit export and is not a claim that its commit count equals the cumulative event contribution count."
+    "Source media and pipeline outputs are not redistributed; output digests are public.",
+    "The released demo is a presentation recording of the pipeline; underlying outputs remain bound by SHA-256."
   ]
 }
